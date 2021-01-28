@@ -2,12 +2,15 @@ from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base
 
+
 class French(Base):
     __tablename__ = 'french'
 
-    word_id = Column(Integer, ForeignKey('word_id.id'), primary_key=True)
-    ref_word = relationship('Word_ID', back_populates='french_id')
+    id = Column(Integer, primary_key=True)
 
+    word_id = Column(Integer, ForeignKey('word_id.id'))
+
+    ref_word = relationship('Word_ID')
     synonyms = relationship('FrenchSy')
 
     word = Column(String)
@@ -24,8 +27,9 @@ class French(Base):
 class English(Base):
     __tablename__ = 'english'
 
-    word_id = Column(Integer, ForeignKey('word_id.id'), primary_key=True)
-    ref_word = relationship('Word_ID', back_populates='english_id')
+    id = Column(Integer, primary_key=True)
+
+    word_id = Column(Integer, ForeignKey('word_id.id'))
 
     word = Column(String)
     definition = Column(String)
@@ -39,8 +43,9 @@ class English(Base):
 class Dutch(Base):
     __tablename__ = 'dutch'
 
-    word_id = Column(Integer, ForeignKey('word_id.id'), primary_key=True)
-    ref_word = relationship('Word_ID', back_populates='dutch_id')
+    id = Column(Integer, primary_key=True)
+
+    word_id = Column(Integer, ForeignKey('word_id.id'))
 
     word = Column(String)
     definition = Column(String)

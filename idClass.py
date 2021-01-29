@@ -5,10 +5,17 @@ from sqlalchemy.orm import relationship
 from base import Base
 
 class Word_ID(Base):
+    """"""
     __tablename__ = 'word_id'
 
-    word = Column(String, primary_key=true)
+    id = Column(Integer, primary_key=true)
 
+    word = Column(String)
+
+    # Relationships :
+    french_word = relationship("French", back_populates="ref_word", uselist=False)
+    english_word = relationship("English", back_populates="ref_word", uselist=False)
+    dutch_word = relationship("Dutch", back_populates="ref_word", uselist=False)
 
     def __init__(self, word):
         self.word = word

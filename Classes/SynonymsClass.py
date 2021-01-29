@@ -15,7 +15,7 @@ class FrenchSy(Base):
     synonyms = Column(String)
     ref_synonym_id = Column(Integer, ForeignKey=('french.id'))
 
-    # Relationships
+    # Relationship
     ref_synonym = relationship('French', back_populates='french_synonyms')
 
     def __init__(self, synonyms, ref_synonym):

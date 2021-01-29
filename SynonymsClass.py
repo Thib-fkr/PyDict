@@ -7,9 +7,11 @@ from base import Base
 class FrenchSy(Base):
     """"""
 
+    # Table info
     __tablename__ = 'french_synonyms'
     id = Column(Integer, primary_key=True)
 
+    # Values
     synonyms = Column(String)
     ref_synonym_id = Column(Integer, ForeignKey=('french.id'))
 
@@ -23,9 +25,11 @@ class FrenchSy(Base):
 class EnglishSy(Base):
     """"""
 
+    # Table info
     __tablename__ = 'english_synonyms'
     id = Column(Integer, primary_key=True)
 
+    # Values
     synonyms = Column(String)
     ref_synonym_id = Column(Integer, ForeignKey=('english.id'))
 
@@ -39,9 +43,11 @@ class EnglishSy(Base):
 class DutchSy(Base):
     """"""
 
+    # Table info
     __tablename__ = 'dutch_synonyms'
     word = Column(Integer, primary_key=True)
 
+    # Values
     synonyms = Column(String)
     ref_synonym_id = Column(Integer, ForeignKey=('dutch.id'))
 

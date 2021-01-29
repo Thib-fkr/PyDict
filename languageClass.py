@@ -4,16 +4,28 @@ from base import Base
 
 
 class French(Base):
-    """"""
-    __tablename__ = 'french'
+    """
+    French language table
 
+    Informations to specify :
+    --------------
+    word, 
+    definition, 
+    gender, 
+    part-of-speech, 
+    reference word
+    """
+
+    # Table info
+    __tablename__ = 'french'
     id = Column(Integer, primary_key=True)
 
-    ref_word_id = Column(Integer, ForeignKey('word_id.id'))
+    # Values
     word = Column(String)
     definition = Column(String)
     gender = Column(String)
     pos = Column(String)
+    ref_word_id = Column(Integer, ForeignKey('word_id.id'))
 
     # Relationships
     ref_word = relationship('Word_ID', back_populates='french', uselist=False)
@@ -27,15 +39,26 @@ class French(Base):
         self.ref_word = ref_word
 
 class English(Base):
-    """"""
-    __tablename__ = 'english'
+    """
+    English language table
 
+    Informations to specify :
+    --------------
+    word, 
+    definition, 
+    part-of-speech, 
+    reference word
+    """
+
+    # Table info
+    __tablename__ = 'english'
     id = Column(Integer, primary_key=True)
 
-    ref_word_id = Column(Integer, ForeignKey('word_id.id'))
+    # Values
     word = Column(String)
     definition = Column(String)
     pos = Column(String)
+    ref_word_id = Column(Integer, ForeignKey('word_id.id'))
 
     # Relationships
     ref_word = relationship('Word_ID', back_populates='english', uselist=False)
@@ -48,16 +71,28 @@ class English(Base):
         self.ref_word = ref_word
 
 class Dutch(Base):
-    """"""
-    __tablename__ = 'dutch'
+    """
+    Dutch language table
 
+    Informations to specify:
+    --------------
+    word, 
+    definition, 
+    gender, 
+    part-of-speech, 
+    reference word
+    """
+
+    # Table info
+    __tablename__ = 'dutch'
     id = Column(Integer, primary_key=True)
 
-    ref_word_id = Column(Integer, ForeignKey('word_id.id'))
+    # Values
     word = Column(String)
     definition = Column(String)
     gender = Column(String)
     pos = Column(String)
+    ref_word_id = Column(Integer, ForeignKey('word_id.id'))
 
     # Relationships
     ref_word = relationship('Word_ID', back_populates='dutch', uselist=False)

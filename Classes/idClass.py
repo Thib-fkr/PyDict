@@ -17,9 +17,9 @@ class Word_ID(Base):
     word = Column(String)
 
     # Relationships
-    french_word = relationship("French", back_populates="ref_word", uselist=False)
-    english_word = relationship("English", back_populates="ref_word", uselist=False)
-    dutch_word = relationship("Dutch", back_populates="ref_word", uselist=False)
+    french_word = relationship("French", uselist=False, back_populates="ref_word")
+    english_word = relationship("English", uselist=False, back_populates="ref_word")
+    dutch_word = relationship("Dutch", uselist=False, back_populates="ref_word")
 
     def __init__(self, word):
         self.word = word

@@ -16,7 +16,7 @@ class FrenchSy(Base):
     ref_synonym_id = Column(Integer, ForeignKey=('french.id'))
 
     # Relationship
-    ref_synonym = relationship('French', back_populates='french_synonyms')
+    ref_synonym = relationship('French', back_populates='synonyms')
 
     def __init__(self, synonyms, ref_synonym):
         self.synonyms = synonyms
@@ -34,7 +34,7 @@ class EnglishSy(Base):
     ref_synonym_id = Column(Integer, ForeignKey=('english.id'))
 
     # Relationship
-    ref_synonym = relationship('English', back_populates='english_synonyms')
+    ref_synonym = relationship('English', back_populates='synonyms')
 
     def __init__(self, synonyms, ref_synonym):
         self.synonyms = synonyms
@@ -52,7 +52,7 @@ class DutchSy(Base):
     ref_synonym_id = Column(Integer, ForeignKey=('dutch.id'))
 
     # Relationship
-    ref_synonym = relationship('Dutch', back_populates='dutch_synonyms')
+    ref_synonym = relationship('Dutch', back_populates='synonyms')
 
     def __init__(self, synonyms, ref_synonym):
         self.synonyms = synonyms

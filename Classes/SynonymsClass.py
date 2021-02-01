@@ -2,7 +2,7 @@
 
 from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
-from base import Base
+from Classes.base import Base
 
 class FrenchSy(Base):
     """"""

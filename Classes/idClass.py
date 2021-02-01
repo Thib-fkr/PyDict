@@ -5,10 +5,10 @@ from sqlalchemy.orm import relationship
 from base import Base
 
 class Word_ID(Base):
-
     """
     Reference word in english used to map other words in different languages
     """
+
     # Table info
     __tablename__ = 'word_id'
     id = Column(Integer, primary_key=true)

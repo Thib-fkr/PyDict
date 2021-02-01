@@ -18,14 +18,13 @@ class French(Base):
 
     # Table info
     __tablename__ = 'french'
-    id = Column(Integer, primary_key=True)
+    ref_word_id = Column(Integer, ForeignKey('word_id.id'), primary_key=True)
 
     # Values
     word = Column(String)
     definition = Column(String)
     gender = Column(String)
     pos = Column(String)
-    ref_word_id = Column(Integer, ForeignKey('word_id.id'))
 
     # Relationships
     ref_word = relationship('Word_ID', uselist=False, back_populates='french_word')
@@ -52,13 +51,12 @@ class English(Base):
 
     # Table info
     __tablename__ = 'english'
-    id = Column(Integer, primary_key=True)
+    ref_word_id = Column(Integer, ForeignKey('word_id.id'), primary_key=True)
 
     # Values
     word = Column(String)
     definition = Column(String)
     pos = Column(String)
-    ref_word_id = Column(Integer, ForeignKey('word_id.id'))
 
     # Relationships
     ref_word = relationship('Word_ID', uselist=False, back_populates='english_word')
@@ -85,14 +83,13 @@ class Dutch(Base):
 
     # Table info
     __tablename__ = 'dutch'
-    id = Column(Integer, primary_key=True)
+    ref_word_id = Column(Integer, ForeignKey('word_id.id'), primary_key=True)
 
     # Values
     word = Column(String)
     definition = Column(String)
     gender = Column(String)
     pos = Column(String)
-    ref_word_id = Column(Integer, ForeignKey('word_id.id'))
 
     # Relationships
     ref_word = relationship('Word_ID', uselist=False, back_populates='dutch_word')

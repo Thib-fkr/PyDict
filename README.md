@@ -26,6 +26,6 @@ The goal of this project is to create a tool that can help someone who wants to 
 
 ### The program has to be able to :
 
-- filter the data in any way the user ask (if possible)
+- filter the data in any way the user asks (if possible)
 
 - add, access, modify and remove data within the database

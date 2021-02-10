@@ -10,5 +10,11 @@ session = Session()
 
 # Test goes here
 
+# Reference word
+
+# Word in a specific language
+
+# Synonyms
+
 session.commit()
 session.close()

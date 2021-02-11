@@ -30,3 +30,10 @@ The goal of this project is to create a tool that can help someone who wants to 
 - filter the data in any way the user asks (if possible)
 
 - add, access, modify and remove data within the database
+
+### To be implemented next :
+
+- scan whether there already are specific tables in the DB or not
+
+- (create table automatically ?)
+

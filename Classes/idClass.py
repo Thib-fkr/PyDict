@@ -11,7 +11,7 @@ class Word_ID(Base):
 
     # Table info
     __tablename__ = 'word_id'
-    id = Column(Integer, primary_key=true)
+    id = Column(Integer, primary_key=True)
 
     # Values
     word = Column(String)

@@ -6,6 +6,7 @@ The goal of this project is to create a tool that can help someone who wants to 
 - [Python 3.8 (programming language)](https://www.python.org)
 - [SQLAlchemy (ORM)](https://www.sqlalchemy.org)
 - [PostgreSQL (SQBD)](https://www.postgresql.org)
+- [Psycopg2 (PostgreSQL adaptater for python)](https://www.psycopg.org)
 
 ## Features
 ### The user has to be able to :

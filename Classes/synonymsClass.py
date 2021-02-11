@@ -13,7 +13,7 @@ class FrenchSy(Base):
 
     # Values
     synonyms = Column(String)
-    ref_synonym_id = Column(Integer, ForeignKey=('french.id'))
+    ref_synonym_id = Column(Integer, ForeignKey('french.id'))
 
     # Relationship
     ref_synonym = relationship('French', back_populates='synonyms')
@@ -31,7 +31,7 @@ class EnglishSy(Base):
 
     # Values
     synonyms = Column(String)
-    ref_synonym_id = Column(Integer, ForeignKey=('english.id'))
+    ref_synonym_id = Column(Integer, ForeignKey('english.id'))
 
     # Relationship
     ref_synonym = relationship('English', back_populates='synonyms')
@@ -49,7 +49,7 @@ class DutchSy(Base):
 
     # Values
     synonyms = Column(String)
-    ref_synonym_id = Column(Integer, ForeignKey=('dutch.id'))
+    ref_synonym_id = Column(Integer, ForeignKey('dutch.id'))
 
     # Relationship
     ref_synonym = relationship('Dutch', back_populates='synonyms')

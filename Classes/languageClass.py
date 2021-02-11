@@ -34,12 +34,12 @@ class French(Base):
     ref_word = relationship('Word_ID', uselist=False, back_populates='french_word')
     synonyms = relationship('FrenchSy')
 
-    def __init__(self, word, definition, gender, pos, ref_word):
+    def __init__(self, word, ref_word, definition='', gender='', pos=''):
         self.word = word
+        self.ref_word = ref_word
         self.definition = definition
         self.gender = gender
         self.pos = pos
-        self.ref_word = ref_word
 
 class English(Base):
     """
@@ -66,11 +66,12 @@ class English(Base):
     ref_word = relationship('Word_ID', uselist=False, back_populates='english_word')
     synonyms = relationship('EnglishSy')
 
-    def __init__(self, word, definition, pos, ref_word):
+    def __init__(self, word, ref_word, definition='', gender=''):
         self.word = word
-        self.definition = definition
-        self.pos = pos
         self.ref_word = ref_word
+        self.definition = definition
+        self.gender = gender
+
 
 class Dutch(Base):
     """
@@ -99,9 +100,9 @@ class Dutch(Base):
     ref_word = relationship('Word_ID', uselist=False, back_populates='dutch_word')
     synonyms = relationship('DutchSy')
 
-    def __init__(self, word, definition, gender, pos, ref_word):
+    def __init__(self, word, ref_word, definition='', gender='', pos=''):
         self.word = word
+        self.ref_word = ref_word
         self.definition = definition
         self.gender = gender
         self.pos = pos
-        self.ref_word = ref_word

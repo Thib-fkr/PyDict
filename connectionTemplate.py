@@ -1,3 +1,7 @@
+# File containing a template for the connexion to a DB.
+#
+#
+
 from Classes.base import Session, engine, Base
 
 from Classes.idClass import Word_ID

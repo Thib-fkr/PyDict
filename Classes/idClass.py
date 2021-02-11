@@ -1,4 +1,6 @@
-# coding=utf-8
+# File containing a table that will allow the program to map words inbetween the different languages.
+#
+#
 
 from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship

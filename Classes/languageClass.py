@@ -1,3 +1,7 @@
+# File containing the objects that will store basic dictionnary data.
+#
+#
+
 from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from Classes.base import Base

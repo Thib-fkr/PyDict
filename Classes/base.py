@@ -1,4 +1,6 @@
-# coding=utf-8
+# File containing the base object that has to be initialized in order to use the SQLalchemy's ORM.
+#
+#
 
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base

@@ -1,4 +1,6 @@
-# coding=utf-8
+# File containing objects that will be used to store synonyms related to basic dictionnary data.
+#
+#
 
 from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship

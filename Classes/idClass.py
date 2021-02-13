@@ -4,7 +4,7 @@
 
 from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
-from Classes.base import Base
+from Classes.baseTest import Base
 
 class Word_ID(Base):
     """

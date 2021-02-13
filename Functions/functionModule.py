@@ -1,8 +1,8 @@
 #
 #
 #
-from Classes.base import Session, engine, Base
-
+from Classes.baseTest import Session, engine, Base
+from sqlalchemy.orm import query
 from Classes.idClass import Word_ID
 from Classes.languageClass import French, English, Dutch
 from Classes.synonymsClass import FrenchSy, EnglishSy, DutchSy
@@ -20,10 +20,10 @@ def tableExist(tableName):
     """
     return engine.has_table(tableName)
 
-def dynamicQuery(session, model, **kwargs):
+def dynamicQuery(session, model, query):
     """"""
-    return session.query(model).filter_by(**kwargs).all()
+    return session.query(model).filter_by(**query).all()
 
 def addWord(session, model, **kwargs):
     """"""
-    passS
+    pass

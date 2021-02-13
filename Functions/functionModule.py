@@ -23,3 +23,7 @@ def tableExist(tableName):
 def dynamicQuery(session, model, **kwargs):
     """"""
     return session.query(model).filter_by(**kwargs).all()
+
+def addWord(session, model, **kwargs):
+    """"""
+    passS

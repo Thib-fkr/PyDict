@@ -1,4 +1,8 @@
 .vscode/
 Classes/__pychache__/
+Classes/baseTest.py
+Classes/baseTest
+baseTest.py
+baseTest
 *.pyc
 *.cpython-38.pyc

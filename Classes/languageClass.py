@@ -61,12 +61,13 @@ class English(Base):
     word = Column(String)
     definition = Column(String)
     pos = Column(String)
+    gender = Column(String)
 
     # Relationships
     ref_word = relationship('Word_ID', uselist=False, back_populates='english_word')
     synonyms = relationship('EnglishSy')
 
-    def __init__(self, word, ref_word, definition='', gender=''):
+    def __init__(self, word, ref_word, definition='', pos='', gender=''):
         self.word = word
         self.ref_word = ref_word
         self.definition = definition

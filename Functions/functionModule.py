@@ -1,13 +1,15 @@
 #
 #
 #
+from typing import Union
 from sqlalchemy import MetaData
 
 from sqlalchemy.inspection import inspect
 
-# The next two imports are only to be used for static typing
+# The next three imports are only to be used for static typing
 from sqlalchemy.orm.session import Session as SessionObject
 from sqlalchemy.sql.schema import Table as TableObject
+from sqlalchemy.engine.base import Engine as EngineObject
 
 from Classes.baseTest import Session, engine, Base
 
@@ -84,6 +86,11 @@ def dynamicQuery(session:SessionObject, model:TableObject, query:dict):
     """
     model = getTable(model)
     return session.query(model).filter_by(**query).all()
+
+
+
+
+
 
 ################################################
 

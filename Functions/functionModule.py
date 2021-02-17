@@ -5,11 +5,26 @@ from sqlalchemy import MetaData
 
 from sqlalchemy.inspection import inspect
 
+# The next two imports are only to be used for static typing
+from sqlalchemy.orm.session import Session as SessionObject
+from sqlalchemy.sql.schema import Table as TableObject
+
 from Classes.baseTest import Session, engine, Base
 
 from Classes.languageClass import French, English, Dutch
 
-def tableExist(tableName):
+
+def getColumns(tableName:str):
+    """
+    Get all the available columns in a specific table
+    Parameters :
+    ------------
+    tableName : name of the table (str)
+    """
+    columns = [column.name for column in inspect(getTable(tableName)).c]
+    return columns
+
+def tableExist(tableName:str):
     """
     Check if a table exist
     Parameters :
@@ -22,9 +37,20 @@ def tableExist(tableName):
     """
     return engine.has_table(tableName)
 
-def getTable(tableName=''):
+def getTable(tableName:str):
     """
     Get the SQLAlchemy table object by the provided name
+    Parameters :
+    ------------
+    tableName : name of the table (str)
+
+    Output :
+    --------
+    tableModel : SQLAlchemy table object (sqlalchemy.sql.schema.Table)
+
+    Raise :
+    -------
+    ValueError : if the table does not exist
     """
     if tableExist(tableName):
         meta = MetaData()
@@ -34,17 +60,30 @@ def getTable(tableName=''):
             if table.name == tableName :
                 return table
     else:
-        raise ValueError('[+] the table {} does not exist'.format(tableName))
+        raise ValueError
 
-def dynamicQuery(session, model, query):
-    """"""
+def dynamicQuery(session:SessionObject, model:TableObject, query:dict):
+    """
+    Allow to get informations from the database in a way that is more "user/develloper -friendly"
+    Parameters :
+    ------------
+    session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
+    model : Table where you want to get the informations from (sqlalchemy.sql.schema.Table)\n
+    query : How to filter wanted informations(dict)
+
+    Outputs :
+    ---------
+    result : result of the query (list)
+    Notes :
+    -------
+    The query (type:dictonnary) has to correspond to the following pattern :\n
+    {
+        column : value
+    }\n
+    (with both "column" and "value" being strings)
+    """
     model = getTable(model)
     return session.query(model).filter_by(**query).all()
-
-def getColumns(language):
-    """"""
-    columns = [column.name for column in inspect(string_to_language_object_mapper(language)).c]
-    return columns
 
 ################################################
 

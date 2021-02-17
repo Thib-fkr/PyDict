@@ -87,10 +87,7 @@ def dynamicQuery(session:SessionObject, model:TableObject, query:dict):
     model = getTable(model)
     return session.query(model).filter_by(**query).all()
 
-
-
-
-
+# Maybe try to create a class with factory method and use it to make the function add_row ?
 
 ################################################
 

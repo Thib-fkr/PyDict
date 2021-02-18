@@ -6,8 +6,16 @@ from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from Classes.baseTest import Base
 
+class Language(Base):
+    def factory(type, **kwargs):
+        if type == 'French' :
+            return French(**kwargs)
+        elif type == 'Dutch' :
+            return Dutch(**kwargs),
+        elif type == 'English' :
+            return English(**kwargs)
 
-class French(Base):
+class French(Language):
     """
     French language table
 
@@ -41,7 +49,7 @@ class French(Base):
         self.gender = gender
         self.pos = pos
 
-class English(Base):
+class English(Language):
     """
     English language table
 
@@ -74,7 +82,7 @@ class English(Base):
         self.gender = gender
 
 
-class Dutch(Base):
+class Dutch(Language):
     """
     Dutch language table
 

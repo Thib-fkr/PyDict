@@ -23,8 +23,8 @@ def getColumns(tableName:str):
     ------------
     tableName : name of the table (str)
     """
-    columns = [column.name for column in inspect(getTable(tableName)).c]
-    return columns
+    return [column.name for column in inspect(getTable(tableName)).c]
+
 
 def tableExist(tableName:str):
     """
@@ -84,8 +84,7 @@ def dynamicQuery(session:SessionObject, model:TableObject, query:dict):
     }\n
     (with both "column" and "value" being strings)
     """
-    model = getTable(model)
-    return session.query(model).filter_by(**query).all()
+    return session.query(getTable(model)).filter_by(**query).all()
 
 # Maybe try to create a class with factory method and use it to make the function add_row ?
 

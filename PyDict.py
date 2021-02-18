@@ -9,11 +9,11 @@ from Classes.idClass import *
 session = Session()
 
 query = {'word' : 'hello'}
-print(session.query(Word_ID).filter_by(**query).one())
+#session.query(Word_ID).filter_by(**query).one()
 """
 print(session.query(Word_ID) \
     .join(French) \
     .filter_by(**query) \
     .all()[0].french_word.word)
 """
-
+print(dynamicQuery(session,'word_id',query))

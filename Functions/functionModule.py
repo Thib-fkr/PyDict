@@ -118,11 +118,13 @@ def getWordIdObject(session:SessionObject, word:str):
     Word_ID : (PYDICT.Classes.idClass.Word_ID)
     """
     query = {'word' : word}
-    if existingEntryQuery(session, getTable('word_id'), query)
+    if existingEntryQuery(session, getTable('word_id'), query):
         return session.query(Word_ID).filter_by(**query).one()
     else:
         raise ValueError
 
+def addWord(session:SessionObject, ):
+    """"""
 # Maybe try to create a class with factory method and use it to make the function add_row ?
 
 ################################################

@@ -7,6 +7,8 @@ from sqlalchemy.orm import relationship
 from Classes.baseTest import Base
 
 class Language(Base):
+
+    @staticmethod
     def factory(type, **kwargs):
         if type == 'French' :
             return French(**kwargs)

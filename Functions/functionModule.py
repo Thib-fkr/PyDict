@@ -65,13 +65,13 @@ def getTable(tableName:str):
     else:
         raise ValueError
 
-def dynamicQuery(session:SessionObject, model:TableObject, query:dict):
+def dynamicQuery(session:SessionObject, model:str, query:dict):
     """
     Allow to get informations from the database in a way that is more "user/develloper -friendly"
     Parameters :
     ------------
     session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
-    model : Table where you want to get the informations from (sqlalchemy.sql.schema.Table)\n
+    model : Table where you want to get the informations from (str)\n
     query : How to filter wanted informations(dict)
 
     Outputs :
@@ -87,14 +87,14 @@ def dynamicQuery(session:SessionObject, model:TableObject, query:dict):
     """
     return session.query(getTable(model)).filter_by(**query).all()
 
-def existingEntryQuery(session:SessionObject, model:TableObject, query:dict):
+def existingEntryQuery(session:SessionObject, model:str, query:dict):
     """
     Check if an entry matches the info given as 'query'
 
     Parameters :
     ------------
     session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
-    model : Table where you want to get the informations from (sqlalchemy.sql.schema.Table)\n
+    model : Table where you want to get the informations from (str)\n
     query : How to filter wanted informations(dict)
 
     Output :

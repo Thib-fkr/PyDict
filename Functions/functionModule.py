@@ -4,6 +4,7 @@
 
 from sqlalchemy import MetaData
 from sqlalchemy.inspection import inspect
+from sqlalchemy import literal
 
 from Classes.baseTest import Session, engine, Base
 from Classes.languageClass import Language
@@ -84,6 +85,19 @@ def dynamicQuery(session:SessionObject, model:TableObject, query:dict):
     (with both "column" and "value" being strings)
     """
     return session.query(getTable(model)).filter_by(**query).all()
+
+def existingEntryQuery(session:SessionObject, model:TableObject, query:dict):
+    """
+    Check if an entry matches the info given as 'query'
+
+    Parameters :
+    ------------
+    session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
+    model : Table where you want to get the informations from (sqlalchemy.sql.schema.Table)\n
+    query : How to filter wanted informations(dict)
+    """
+    q = session.query(getTable(model)).filter_by(**query)
+    return session.query(literal(True)).filter(q.exists()).scalar()
 
 # Maybe try to create a class with factory method and use it to make the function add_row ?
 

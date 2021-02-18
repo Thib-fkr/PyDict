@@ -1,10 +1,10 @@
 # Main file of the PYDICT project
 #
 #
-from Functions.functionModule import dynamicQuery, getTable, getColumns
+from Functions.functionModule import dynamicQuery, getTable, getColumns, existingEntryQuery
 from Classes.baseTest import Session, engine, Base
 
 session = Session()
-query = {'gender' : 'neutral'}
-print(type(dynamicQuery(session, 'english', query)))
-
+query = {'word' : 'bonjour'}
+print(type(existingEntryQuery(session, 'french', query)))
+#print(type(dynamicQuery(session, 'french', query)))

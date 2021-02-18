@@ -8,6 +8,8 @@ from Classes.idClass import Word_ID
 from Classes.languageClass import French, English, Dutch
 from Classes.synonymsClass import FrenchSy, EnglishSy, DutchSy
 
+from Functions.functionModule import getTable
+
 def main():
     Base.metadata.create_all(engine)
 
@@ -16,7 +18,9 @@ def main():
 
     # -------------------------------------BEGIN------------------------------------------------------
 
+    
     # Create wanted objects
+    """
     Hello = Word_ID('hello')
     Appel = Word_ID('appel')
     Banana = Word_ID('banana')
@@ -66,6 +70,7 @@ def main():
 
     session.add(sBonjour)
     session.add(sHello)
+    """
     # --------------------------------------END-------------------------------------------------------
 
     # Commit and close the session

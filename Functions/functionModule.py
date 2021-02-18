@@ -1,19 +1,19 @@
 #
 #
 #
-from typing import Union
-from sqlalchemy import MetaData
 
+from sqlalchemy import MetaData
 from sqlalchemy.inspection import inspect
 
-# The next three imports are only to be used for static typing
+from Classes.baseTest import Session, engine, Base
+from Classes.languageClass import Language
+
+# The next imports are only to be used for static typing
+from typing import Union
+
 from sqlalchemy.orm.session import Session as SessionObject
 from sqlalchemy.sql.schema import Table as TableObject
 from sqlalchemy.engine.base import Engine as EngineObject
-
-from Classes.baseTest import Session, engine, Base
-
-from Classes.languageClass import Language
 
 
 def getColumns(tableName:str):
@@ -24,7 +24,6 @@ def getColumns(tableName:str):
     tableName : name of the table (str)
     """
     return [column.name for column in inspect(getTable(tableName)).c]
-
 
 def tableExist(tableName:str):
     """

@@ -13,7 +13,7 @@ from sqlalchemy.engine.base import Engine as EngineObject
 
 from Classes.baseTest import Session, engine, Base
 
-from Classes.languageClass import French, English, Dutch
+from Classes.languageClass import Language
 
 
 def getColumns(tableName:str):

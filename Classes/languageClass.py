@@ -41,8 +41,8 @@ class French(Base):
     pos = Column(String)
 
     # Relationships
-    ref_word = relationship('Word_ID', uselist=False, back_populates='french_word')
-    synonyms = relationship('FrenchSy')
+    ref_word = relationship('Word_ID', back_populates='french_word')
+    #synonyms = relationship('FrenchSy',back_populates='ref_synonym')
 
     def __init__(self, word, ref_word, definition='', gender='', pos=''):
         self.word = word
@@ -74,8 +74,8 @@ class English(Base):
     gender = Column(String)
 
     # Relationships
-    ref_word = relationship('Word_ID', uselist=False, back_populates='english_word')
-    synonyms = relationship('EnglishSy')
+    ref_word = relationship('Word_ID', back_populates='english_word')
+    #synonyms = relationship('EnglishSy',back_populates='ref_synonym')
 
     def __init__(self, word, ref_word, definition='', pos='', gender=''):
         self.word = word
@@ -108,8 +108,8 @@ class Dutch(Base):
     pos = Column(String)
 
     # Relationships
-    ref_word = relationship('Word_ID', uselist=False, back_populates='dutch_word')
-    synonyms = relationship('DutchSy')
+    ref_word = relationship('Word_ID', back_populates='dutch_word')
+    #synonyms = relationship('DutchSy',back_populates='ref_synonym')
 
     def __init__(self, word, ref_word, definition='', gender='', pos=''):
         self.word = word

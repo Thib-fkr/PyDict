@@ -20,7 +20,7 @@ def main():
 
     
     # Create wanted objects
-    """
+    
     Hello = Word_ID('hello')
     Appel = Word_ID('appel')
     Banana = Word_ID('banana')
@@ -70,7 +70,7 @@ def main():
 
     session.add(sBonjour)
     session.add(sHello)
-    """
+    
     # --------------------------------------END-------------------------------------------------------
 
     # Commit and close the session

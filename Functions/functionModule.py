@@ -8,6 +8,7 @@ from sqlalchemy import literal
 
 from Classes.baseTest import Session, engine, Base
 from Classes.languageClass import Language
+from Classes.idClass import Word_ID
 
 # The next imports are only to be used for static typing
 from typing import Union
@@ -95,9 +96,32 @@ def existingEntryQuery(session:SessionObject, model:TableObject, query:dict):
     session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
     model : Table where you want to get the informations from (sqlalchemy.sql.schema.Table)\n
     query : How to filter wanted informations(dict)
+
+    Output :
+    --------
+    entryExists : (bool)
     """
     q = session.query(getTable(model)).filter_by(**query)
     return session.query(literal(True)).filter(q.exists()).scalar()
+
+def getWordIdObject(session:SessionObject, word:str):
+    """
+    Get the Word_ID object that corresponds to the given word
+
+    Parameters :
+    ------------
+    session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
+    word : (str)
+
+    Output :
+    --------
+    Word_ID : (PYDICT.Classes.idClass.Word_ID)
+    """
+    query = {'word' : word}
+    if existingEntryQuery(session, getTable('word_id'), query)
+        return session.query(Word_ID).filter_by(**query).one()
+    else:
+        raise ValueError
 
 # Maybe try to create a class with factory method and use it to make the function add_row ?
 

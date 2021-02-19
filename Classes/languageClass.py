@@ -83,7 +83,6 @@ class English(Base):
         self.definition = definition
         self.gender = gender
 
-
 class Dutch(Base):
     """
     Dutch language table

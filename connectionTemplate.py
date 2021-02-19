@@ -45,6 +45,7 @@ def main():
 
     sBonjour = FrenchSy('salut', bonjour)
     sHello = EnglishSy('Hi', hello)
+
     # Add them to session (one by one)
     session.add(Hello)
     session.add(Appel)

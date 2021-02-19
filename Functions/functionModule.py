@@ -17,7 +17,6 @@ from sqlalchemy.orm.session import Session as SessionObject
 from sqlalchemy.sql.schema import Table as TableObject
 from sqlalchemy.engine.base import Engine as EngineObject
 
-
 def getColumns(tableName:str):
     """
     Get all the available columns in a specific table
@@ -129,11 +128,11 @@ def addRow(session:SessionObject, tableName:str, word:str, ref_word:str, others:
 
     Parameters :
     ------------
-    session :
-    tableName :
-    word :
-    ref_word :
-    others :
+    session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
+    tableName : name of the table (str)
+    word : word you want to add (str)
+    ref_word : reference word (str)
+    others : informations about the word (dict)
 
     """
     if (not existingEntryQuery(session, 'word_id', {'word' : ref_word})) and addWID:
@@ -162,22 +161,4 @@ def addRow(session:SessionObject, tableName:str, word:str, ref_word:str, others:
         session.close()
 
 
-
-# Maybe try to create a class with factory method and use it to make the function add_row ?
-
 ################################################
-
-def getInfo(language, knownInfo, wantedInfo):
-    """
-    Get specific information about a word
-    Parameters :
-    ------------
-    (session : SQLAlchemy session object)
-    language : object from one of the classes in the languageClass file (listed in stringObjectMapper comments)
-    knownInfo : info that are required to find the word you want info about (usually the word itself)
-    wantedInfo : info you want to have about the specified word
-
-    Output :
-    --------
-    info : the info you want (str)
-    """

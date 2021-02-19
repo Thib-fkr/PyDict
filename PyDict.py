@@ -1,14 +1,15 @@
 # Main file of the PYDICT project
 #
 #
-from Functions.functionModule import dynamicQuery, getTable, getColumns, existingEntryQuery
+from Functions.functionModule import dynamicQuery, getTable, getColumns, existingEntryQuery, addRow
 from Classes.baseTest import Session, engine, Base
 from Classes.languageClass import *
 from Classes.idClass import *
 
 session = Session()
 
-query = {'word' : 'hello'}
+query = {'definition' : 'from meedelen',
+        'pos' : 'common noun'}
 #session.query(Word_ID).filter_by(**query).one()
 """
 print(session.query(Word_ID) \
@@ -16,4 +17,5 @@ print(session.query(Word_ID) \
     .filter_by(**query) \
     .all()[0].french_word.word)
 """
-print(dynamicQuery(session,'word_id',query))
+#addRow(session, 'dutch', 'mededeling', 'communication', query, addWID=True)
+print(dynamicQuery(session, 'dutch', query))

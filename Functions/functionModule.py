@@ -118,13 +118,51 @@ def getWordIdObject(session:SessionObject, word:str):
     Word_ID : (PYDICT.Classes.idClass.Word_ID)
     """
     query = {'word' : word}
-    if existingEntryQuery(session, getTable('word_id'), query):
+    if existingEntryQuery(session, 'word_id', query):
         return session.query(Word_ID).filter_by(**query).one()
     else:
         raise ValueError
 
-def addWord(session:SessionObject, ):
-    """"""
+def addRow(session:SessionObject, tableName:str, word:str, ref_word:str, others:dict, addWID=False):
+    """
+    Add a row to a table
+
+    Parameters :
+    ------------
+    session :
+    tableName :
+    word :
+    ref_word :
+    others :
+
+    """
+    if (not existingEntryQuery(session, 'word_id', {'word' : ref_word})) and addWID:
+
+        WIDobj = Word_ID(ref_word)
+
+        # I don't know why this factory method returns a tuple but okay
+
+        obj = Language.factory(tableName, word, WIDobj, **others)[0]
+
+        session.add(WIDobj)
+        session.add(obj)
+
+        session.commit()
+        session.close()
+
+    elif (not existingEntryQuery(session, 'word_id', {'word' : ref_word})) and (not addWID):
+        raise IOError
+
+    else:
+
+        obj = Language.factory(tableName, word, getWordIdObject(session, ref_word), **others)
+
+        session.add(obj)
+        session.commit()
+        session.close()
+
+
+
 # Maybe try to create a class with factory method and use it to make the function add_row ?
 
 ################################################

@@ -9,13 +9,13 @@ from Classes.baseTest import Base
 class Language(object):
 
     @staticmethod
-    def factory(type, **kwargs):
-        if type == 'French' :
-            return French(**kwargs)
-        elif type == 'Dutch' :
-            return Dutch(**kwargs),
-        elif type == 'English' :
-            return English(**kwargs)
+    def factory(type:str, word:str, ref_word:str, **kwargs):
+        if type == 'french' :
+            return French(word=word, ref_word=ref_word, **kwargs)
+        elif type == 'dutch' :
+            return Dutch(word=word, ref_word=ref_word, **kwargs),
+        elif type == 'english' :
+            return English(word=word, ref_word=ref_word, **kwargs)
 
 class French(Base):
     """

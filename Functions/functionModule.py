@@ -17,6 +17,8 @@ from sqlalchemy.orm.session import Session as SessionObject
 from sqlalchemy.sql.schema import Table as TableObject
 from sqlalchemy.engine.base import Engine as EngineObject
 
+
+
 def getColumns(tableName:str):
     """
     Get all the available columns in a specific table
@@ -76,6 +78,7 @@ def dynamicQuery(session:SessionObject, model:str, query:dict):
     Outputs :
     ---------
     result : result of the query (list)
+
     Notes :
     -------
     The query (type:dictonnary) has to correspond to the following pattern :\n

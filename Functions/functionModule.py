@@ -170,8 +170,8 @@ def delRow(model:str, query:dict, mode=None):
 
     Parameters :
     ------------
-    model :
-    query :
+    model : (str)
+    query : (dict)
     """
 
 def updateRow(session:SessionObject, model:str, query:dict, values:dict):
@@ -180,11 +180,12 @@ def updateRow(session:SessionObject, model:str, query:dict, values:dict):
 
     Parameters :
     ------------
-    session :
-    model :
-    query :
-    values :
+    session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
+    model : (str)\n
+    query : (dict)\n
+    values : (dict)\n
     """
+    # synchronize_session=False is here to prevent an error
     session.query(getTable(model)).filter_by(**query).update(values, synchronize_session=False)
 
 

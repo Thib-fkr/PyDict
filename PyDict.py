@@ -20,3 +20,4 @@ print(session.query(Word_ID) \
 """
 #addRow(session, 'dutch', 'mededeling', 'communication', query, addWID=True)
 updateRow(session, 'dutch',query, value)
+print(dynamicQuery(session, 'dutch', query))

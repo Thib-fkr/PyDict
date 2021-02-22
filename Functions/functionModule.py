@@ -5,7 +5,6 @@
 from sqlalchemy import MetaData
 from sqlalchemy.inspection import inspect
 from sqlalchemy import literal
-from sqlalchemy import update
 
 from Classes.baseTest import Session, engine, Base
 from Classes.languageClass import Language
@@ -186,9 +185,7 @@ def updateRow(session:SessionObject, model:str, query:dict, values:dict):
     query :
     values :
     """
-    Tablemodel = getTable(model)
-    q = session.query(Tablemodel).filter_by(**query)
-    update(Tablemodel, whereclause=q, values=values)
+    session.query(getTable(model)).filter_by(**query).update(values, synchronize_session=False)
 
 
 ################################################

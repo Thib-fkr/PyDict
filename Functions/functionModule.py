@@ -5,6 +5,7 @@
 from sqlalchemy import MetaData
 from sqlalchemy.inspection import inspect
 from sqlalchemy import literal
+from sqlalchemy import update
 
 from Classes.baseTest import Session, engine, Base
 from Classes.languageClass import Language
@@ -106,7 +107,7 @@ def existingEntryQuery(session:SessionObject, model:str, query:dict):
     q = session.query(getTable(model)).filter_by(**query)
     return session.query(literal(True)).filter(q.exists()).scalar()
 
-def getLanguageObject(session:SessionObject, model:str, query:dict):
+def getWordIDObject(session:SessionObject, word:str):
     """
     Get the Word_ID object that corresponds to the given word
 
@@ -114,12 +115,13 @@ def getLanguageObject(session:SessionObject, model:str, query:dict):
     ------------
     session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
     model : Table where you want to get the informations from (str)\n
-    query : (dict)
+    word : (str)
 
     Output :
     --------
     Word_ID : (PYDICT.Classes.idClass.Word_ID)
     """
+    query = {'word' : word}
     if existingEntryQuery(session, model, query):
         return session.query(Word_ID).filter_by(**query).one()
     else:
@@ -157,7 +159,7 @@ def addRow(session:SessionObject, tableName:str, word:str, ref_word:str, others:
 
     else:
 
-        obj = Language.factory(tableName, word, getLanguageObject(session,'word_id', ref_word), **others)
+        obj = Language.factory(tableName, word, getWordIDObject(session,'word_id', ref_word), **others)
 
         session.add(obj)
         session.commit()
@@ -184,11 +186,9 @@ def updateRow(session:SessionObject, model:str, query:dict, values:dict):
     query :
     values :
     """
-    wordObject = getLanguageObject(session, model, query)
-    for valuesKey in values:
-        wordObject.valuesKey = values[valuesKey]
+    Tablemodel = getTable(model)
+    q = session.query(Tablemodel).filter_by(**query)
+    update(Tablemodel, whereclause=q, values=values)
 
-    session.add(wordObject)
-    session.commit()
-    session.close()
+
 ################################################

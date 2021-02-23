@@ -164,16 +164,6 @@ def addRow(session:SessionObject, tableName:str, word:str, ref_word:str, others:
         session.commit()
         session.close()
 
-def delRow(model:str, query:dict, mode=None):
-    """
-    Delete a specific row
-
-    Parameters :
-    ------------
-    model : (str)
-    query : (dict)
-    """
-
 def updateRow(session:SessionObject, model:str, query:dict, values:dict):
     """
     Update a specific row
@@ -188,5 +178,17 @@ def updateRow(session:SessionObject, model:str, query:dict, values:dict):
     # synchronize_session=False is here to prevent an error
     session.query(getTable(model)).filter_by(**query).update(values, synchronize_session=False)
 
+def deleteRow(session:SessionObject, model:str, query:dict):
+    """
+    Delete a specific row
+
+    Parameters :
+    ------------
+    session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
+    model : (str)\n
+    query : (dict)\n
+    """
+    # synchronize_session=False is here to prevent an error
+    session.query(getTable(model)).filter_by(**query).delete()
 
 ################################################

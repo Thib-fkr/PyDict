@@ -12,5 +12,11 @@ print(session.query(Word_ID) \
     .filter_by(**query) \
     .all()[0].french_word.word)
 """
+
 parser = argparse.ArgumentParser()
+parser.add_argument()
+parser.add_argument()
+parser.add_argument()
+parser.add_argument()
+
 args = parser.parse_args()

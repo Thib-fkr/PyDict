@@ -3,7 +3,7 @@
 #
 import sys
 import argparse
-
+import logging
 
 """
 session = Session()
@@ -14,9 +14,19 @@ print(session.query(Word_ID) \
 """
 
 parser = argparse.ArgumentParser()
-parser.add_argument()
-parser.add_argument()
-parser.add_argument()
-parser.add_argument()
+
+# How to know how many nargs ?
+
+parser.add_argument('-e','--edit', dest='edit', action='append', nargs=,\
+                    help=)
+
+parser.add_argument('-l','--look', dest='look', action='append', nargs=,\
+                    help=)
+
+parser.add_argument('-v','--view', dest='view', action='append',nargs =,\
+                    help=)
+
+parser.add_argument('-c','--complete', dest='complete', action='store_true',nargs= ,\
+                    help=)
 
 args = parser.parse_args()

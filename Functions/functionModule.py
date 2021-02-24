@@ -10,32 +10,51 @@ from sqlalchemy.orm import Mapper
 from sqlalchemy.orm.state import InstanceState
 
 from Classes.baseTest import Session, engine, Base
-from Classes.languageClass import Language, French, English, Dutch
+from Classes.languageClass import Language
 from Classes.idClass import Word_ID
 
 # The next imports are only to be used for static typing
 from typing import Union
-
+from Classes.languageClass import French as FrenchObject, English as EnglishObject, Dutch as DutchObject
 from sqlalchemy.orm.session import Session as SessionObject
 from sqlalchemy.sql.schema import Table as TableObject
 from sqlalchemy.engine.base import Engine as EngineObject
 
-def getTableObject(tableName):
+def getTableObject(tableName:str):
     """
+    Get table class object by it's name
+    Parameters :
+    ------------
+    tableName : name of the table (str)
+
+    Outputs :
+    ---------
+    table class : any of the table class objects initialized by the program ()
     """
     for c in Base._decl_class_registry.values():
         if hasattr(c, '__table__') and c.__table__.fullname == table_fullname:
             return c
 
-def getRelationship(obj, target):
+def getRelationship(obj:Language.factory, target:Language.factory):
     """
+    Get table instance based on the relationships
+    Parameters :
+    ------------
+    obj :
+    target :
+    Outputs :
+    ---------
+
+    Notes :
+    -------
+    I might have to rewrite this function in a more efficient/simple way.
+    Like using queries to get the object for example.
 
     """
     inspecter = inspect(obj).mapper
     for rel in inspecter.relationships:
         if rel.mapper.class_ == target:
             return rel.mapper.local_table
-
 
 def getColumnsNames(tableName:str):
     """
@@ -186,9 +205,7 @@ def addRow(session:SessionObject, tableName:str, word:str, ref_word:str, others:
 
         WIDobj = Word_ID(ref_word)
 
-        # I don't know why this factory method returns a tuple but okay
-
-        obj = Language.factory(tableName, word, WIDobj, **others)[0]
+        obj = Language.factory(tableName, word, WIDobj, **others)
 
         session.add(WIDobj)
         session.add(obj)

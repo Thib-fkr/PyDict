@@ -13,7 +13,7 @@ class Language(object):
         if type == 'french' :
             return French(word=word, ref_word=ref_word, **kwargs)
         elif type == 'dutch' :
-            return Dutch(word=word, ref_word=ref_word, **kwargs),
+            return Dutch(word=word, ref_word=ref_word, **kwargs)
         elif type == 'english' :
             return English(word=word, ref_word=ref_word, **kwargs)
 

@@ -15,6 +15,7 @@ from Classes.idClass import Word_ID
 
 # The next imports are only to be used for static typing
 from typing import Union
+
 from Classes.languageClass import French as FrenchObject, English as EnglishObject, Dutch as DutchObject
 from sqlalchemy.orm.session import Session as SessionObject
 from sqlalchemy.sql.schema import Table as TableObject
@@ -233,6 +234,7 @@ def deleteRow(session:SessionObject, model:str, query:dict):
 
 def QUE_getTrad(session:SessionObject, baseLanguage:str, targetLanguage:str, query:dict):
     """
+    Get the traduction of a word based on two queries.
     Parameters :
     ------------
     Outputs :
@@ -244,6 +246,7 @@ def QUE_getTrad(session:SessionObject, baseLanguage:str, targetLanguage:str, que
 
 def REL_getTrad(session:SessionObject, baseLanguage:str, targetLanguage:str, query:dict):
     """
+    Get the traduction of a word based of the relationships between the tables.
     Parameters :
     ------------
     Outputs :

@@ -231,9 +231,19 @@ def deleteRow(session:SessionObject, model:str, query:dict):
 
 ################################################
 
-def getTrad(session:SessionObject, baseLanguage:str, targetLanguage:str, query:dict):
+def QUE_getTrad(session:SessionObject, baseLanguage:str, targetLanguage:str, query:dict):
     """
-    
+    Parameters :
+    ------------
+    Outputs :
+    ---------
+    """
+    wordID = dynamicQuery(session, baseLanguage, query)[0]['ref_word_id']
+    info = {'ref_word_id' : wordID}
+    return session.query(rel).filter_by(**info).all()
+
+def REL_getTrad(session:SessionObject, baseLanguage:str, targetLanguage:str, query:dict):
+    """
     Parameters :
     ------------
     Outputs :

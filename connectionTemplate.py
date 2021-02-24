@@ -6,10 +6,17 @@ from Classes.baseTest import Session, engine, Base
 
 from Classes.idClass import Word_ID
 from Classes.languageClass import French, English, Dutch
-from Classes.synonymsClass import FrenchSy, EnglishSy, DutchSy
 
-from Functions.functionModule import getTable
 
+from Functions.functionModule import *
+
+def main():
+    session = Session()
+    #print(type(getWordIDObject(session, 'hello')))
+    #print(type(getLanguageObject(session, 'french', {'word' : 'bonjour'})))
+
+    print(getTrad(session, 'english', 'french', {'word' : 'hello'}))
+"""
 def main():
     Base.metadata.create_all(engine)
 
@@ -78,6 +85,6 @@ def main():
 
     session.commit()
     session.close()
-
+    """
 if __name__ == '__main__':
     main()

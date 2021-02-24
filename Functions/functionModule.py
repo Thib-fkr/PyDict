@@ -6,8 +6,11 @@ from sqlalchemy import MetaData
 from sqlalchemy.inspection import inspect
 from sqlalchemy import literal
 
+from sqlalchemy.orm import Mapper
+from sqlalchemy.orm.state import InstanceState
+
 from Classes.baseTest import Session, engine, Base
-from Classes.languageClass import Language
+from Classes.languageClass import Language, French, English, Dutch
 from Classes.idClass import Word_ID
 
 # The next imports are only to be used for static typing
@@ -17,16 +20,41 @@ from sqlalchemy.orm.session import Session as SessionObject
 from sqlalchemy.sql.schema import Table as TableObject
 from sqlalchemy.engine.base import Engine as EngineObject
 
+def getTableObject(tableName):
+    """
+    """
+    for c in Base._decl_class_registry.values():
+        if hasattr(c, '__table__') and c.__table__.fullname == table_fullname:
+            return c
+
+def getRelationship(obj, target):
+    """
+
+    """
+    inspecter = inspect(obj).mapper
+    for rel in inspecter.relationships:
+        if rel.mapper.class_ == target:
+            return rel.mapper.local_table
 
 
-def getColumns(tableName:str):
+def getColumnsNames(tableName:str):
     """
     Get all the available columns in a specific table
     Parameters :
     ------------
     tableName : name of the table (str)
+    Outputs :
+    ---------
+    ColumnsName : (list)
     """
     return [column.name for column in inspect(getTable(tableName)).c]
+
+def getColumnsObject(tableName:str, columnName:str):
+    """"""
+    for col in getColumnsNames(tableName):
+        if columnName == col:
+            inspec = inspect(getTable(tableName)).c
+            return inspec[col]
 
 def tableExist(tableName:str):
     """
@@ -89,6 +117,21 @@ def dynamicQuery(session:SessionObject, model:str, query:dict):
     """
     return session.query(getTable(model)).filter_by(**query).all()
 
+def getLanguageObject(session:SessionObject, model:str, query:dict):
+    """
+    Get one table object
+    Parameters :
+    ------------
+    session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
+    model : Wanted table object's name (str)\n
+    query : How to filter wanted informations(dict)
+
+    Outputs :
+    ---------
+
+    """
+    return session.query(getTableObject(model)).filter_by(**query).one()
+
 def existingEntryQuery(session:SessionObject, model:str, query:dict):
     """
     Check if an entry matches the info given as 'query'
@@ -121,7 +164,7 @@ def getWordIDObject(session:SessionObject, word:str):
     Word_ID : (PYDICT.Classes.idClass.Word_ID)
     """
     query = {'word' : word}
-    if existingEntryQuery(session, model, query):
+    if existingEntryQuery(session, 'word_id', query):
         return session.query(Word_ID).filter_by(**query).one()
     else:
         raise ValueError
@@ -192,3 +235,12 @@ def deleteRow(session:SessionObject, model:str, query:dict):
     session.query(getTable(model)).filter_by(**query).delete()
 
 ################################################
+
+def getTrad(session:SessionObject, baseLanguage:str, targetLanguage:str, query:dict):
+    """"""
+    # baseLanguageObject.ref_word.targetLanguage_word.word
+
+    languageObject = getLanguageObject(session, baseLanguage, query).ref_word
+    rel = getRelationship(languageObject, getTableObject(targetLanguage))
+    info = {'ref_word_id' : languageObject.id}
+    return session.query(rel).filter_by(**info).all()

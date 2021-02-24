@@ -33,3 +33,10 @@ parser.add_argument('-c','--complete', dest='complete', action='store_true',\
                     help=)
 
 args = parser.parse_args()
+
+if args.debug:
+    logger = logging.getLogger(__name__)
+    logging.basicConfig(filename='pydict-debug.log', filemode='a',\
+                        format="[%(levelname)s]%(asctime)s : %(message)s",\
+                        level=logging.DEBUG)
+    logger.setLevel(logging.DEBUG)

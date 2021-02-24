@@ -12,10 +12,21 @@ from Functions.functionModule import *
 
 def main():
     session = Session()
-    #print(type(getWordIDObject(session, 'hello')))
-    #print(type(getLanguageObject(session, 'french', {'word' : 'bonjour'})))
 
-    print(getTrad(session, 'english', 'french', {'word' : 'hello'}))
+
+
+
+
+
+"""
+session = Session()
+print(session.query(Word_ID) \
+    .join(French) \
+    .filter_by(**query) \
+    .all()[0].french_word.word)
+"""
+
+
 """
 def main():
     Base.metadata.create_all(engine)

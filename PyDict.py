@@ -5,13 +5,6 @@ import sys
 import argparse
 import logging
 
-"""
-session = Session()
-print(session.query(Word_ID) \
-    .join(French) \
-    .filter_by(**query) \
-    .all()[0].french_word.word)
-"""
 
 parser = argparse.ArgumentParser()
 

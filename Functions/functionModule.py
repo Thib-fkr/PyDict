@@ -306,6 +306,5 @@ def REL_getTrad(session:SessionObject, baseLanguage:str, targetLanguage:str, que
                     .all()
 
     # return session.query(getTableInstance_REL(languageObject, getTableObject(targetLanguage))) \
-    #               .filter_by(**{'ref_word_id' : getTableInstance_QUE(session, baseLanguage, query) \
-    #               .ref_word.id}) \
+    #               .filter_by(**{'ref_word_id' : getTableInstance_QUE(session, baseLanguage, query).ref_word.id}) \
     #               .all()

@@ -25,6 +25,7 @@ def tableExist(tableName:str):
     existance : whether the table exist or not (bool)
     """
     from Classes.baseTest import engine
+
     return engine.has_table(tableName)
 
 def getTable(tableName:str):
@@ -41,12 +42,15 @@ def getTable(tableName:str):
     ValueError : if the table does not exist
     """
     from sqlalchemy import MetaData
+
     if tableExist(tableName):
+
         meta = MetaData()
         meta.reflect(bind=engine)
 
         for table in meta.sorted_tables:
             if table.name == tableName :
+
                 return table
     else:
         raise ValueError
@@ -62,8 +66,10 @@ def getTableObject(tableName:str):
     table class : any of the table class objects initialized by the program ()
     """
     from Classes.baseTest import Base
+
     for table in Base._decl_class_registry.values():
         if hasattr(table, '__table__') and table.__table__.fullname == tableName:
+
             return table
 
 def getTableInstance_REL(obj, target):
@@ -83,8 +89,12 @@ def getTableInstance_REL(obj, target):
 
     for rel in inspect(obj).mapper.relationships:
         if rel.mapper.class_ == target:
+
             return rel.mapper.local_table
-    # return [rel.mapper.local_table for rel in inspect(obj).mapper.relationships if rel.mapper.class_ == target]
+
+    # return [rel.mapper.local_table \
+    #       for rel in inspect(obj).mapper.relationships \
+    #       if rel.mapper.class_ == target]
 
 def getTableInstance_QUE(session:SessionObject, model:str, query:dict):
     """
@@ -97,7 +107,9 @@ def getTableInstance_QUE(session:SessionObject, model:str, query:dict):
     Outputs :
     ---------
     """
-    return session.query(getTableObject(model)).filter_by(**query).one()
+    return session.query(getTableObject(model)) \
+                .filter_by(**query) \
+                .one()
 
 def getColumnsNames(tableName:str):
     """
@@ -116,7 +128,9 @@ def getColumnsObject(tableName:str, columnName:str):
     for col in getColumnsNames(tableName):
         if columnName == col:
             inspec = inspect(getTable(tableName)).c
+
             return inspec[col]
+
     # return [inspect(getTable(tableName)).c[col] for col in getColumnsNames(tableName) if if columnName == col]
 
 def entryExist(session:SessionObject, model:str, query:dict):
@@ -132,9 +146,16 @@ def entryExist(session:SessionObject, model:str, query:dict):
     entryExists : (bool)
     """
     from sqlalchemy import literal
+
     q = session.query(getTable(model)).filter_by(**query)
-    return session.query(literal(True)).filter(q.exists()).scalar()
-    # return session.query(literal(True)).filter(session.query(getTable(model)).filter_by(**query).exists()).scalar()
+
+    return session.query(literal(True)) \
+                    .filter(q.exists()) \
+                    .scalar()
+
+    # return session.query(literal(True))\
+    #               .filter(session.query(getTable(model)).filter_by(**query).exists())\
+    #               .scalar()
 
 def getWordIDObject(session:SessionObject, word:str):
     """
@@ -150,8 +171,12 @@ def getWordIDObject(session:SessionObject, word:str):
     """
 
     query = {'word' : word}
+
     if entryExist(session, 'word_id', query):
-        return session.query(Word_ID).filter_by(**query).one()
+
+        return session.query(Word_ID) \
+                    .filter_by(**query) \
+                    .one()
     else:
         raise ValueError
 
@@ -174,7 +199,9 @@ def dynamicQuery(session:SessionObject, model:str, query:dict):
     }\n
     (with both "column" and "value" being strings)
     """
-    return session.query(getTable(model)).filter_by(**query).all()
+    return session.query(getTable(model)) \
+                    .filter_by(**query) \
+                    .all()
 
 def addRow(session:SessionObject, tableName:str, word:str, ref_word:str, others:dict, addWID=False):
     """
@@ -188,6 +215,7 @@ def addRow(session:SessionObject, tableName:str, word:str, ref_word:str, others:
     others : informations about the word (dict)
     """
     from Classes.languageClass import Language
+
     if (not entryExist(session, 'word_id', {'word' : ref_word})) and addWID:
 
         WIDobj = Word_ID(ref_word)
@@ -198,9 +226,9 @@ def addRow(session:SessionObject, tableName:str, word:str, ref_word:str, others:
 
         session.commit()
 
-
     elif (not entryExist(session, 'word_id', {'word' : ref_word})) and (not addWID):
         raise IOError
+
     else:
         obj = Language.factory(tableName, word, getWordIDObject(session,'word_id', ref_word), **others)
 
@@ -218,7 +246,10 @@ def updateRow(session:SessionObject, model:str, query:dict, values:dict):
     values : (dict)\n
     """
     # synchronize_session=False is here to prevent an error
-    session.query(getTable(model)).filter_by(**query).update(values, synchronize_session=False)
+
+    session.query(getTable(model)) \
+            .filter_by(**query) \
+            .update(values, synchronize_session=False)
 
 def deleteRow(session:SessionObject, model:str, query:dict):
     """
@@ -229,7 +260,9 @@ def deleteRow(session:SessionObject, model:str, query:dict):
     model : (str)\n
     query : (dict)\n
     """
-    session.query(getTable(model)).filter_by(**query).delete()
+    session.query(getTable(model)) \
+            .filter_by(**query) \
+            .delete()
 
 ################################################
 
@@ -241,10 +274,18 @@ def QUE_getTrad(session:SessionObject, baseLanguage:str, targetLanguage:str, que
     Outputs :
     ---------
     """
+
     wordID = dynamicQuery(session, baseLanguage, query)[0]['ref_word_id']
+
     info = {'ref_word_id' : wordID}
-    return session.query(rel).filter_by(**info).all()
-    # return session.query(rel).filter_by(**{'ref_word_id' : dynamicQuery(session, baseLanguage, query)[0]['ref_word_id']}).all()
+
+    return session.query(rel) \
+                    .filter_by(**info) \
+                    .all()
+
+    # return session.query(rel)\
+    #               .filter_by(**{'ref_word_id' : dynamicQuery(session, baseLanguage, query)[0]['ref_word_id']})\
+    #               .all()
 
 def REL_getTrad(session:SessionObject, baseLanguage:str, targetLanguage:str, query:dict):
     """
@@ -254,8 +295,17 @@ def REL_getTrad(session:SessionObject, baseLanguage:str, targetLanguage:str, que
     Outputs :
     ---------
     """
+
     languageObject = getTableInstance_QUE(session, baseLanguage, query).ref_word
     rel = getTableInstance_REL(languageObject, getTableObject(targetLanguage))
+
     info = {'ref_word_id' : languageObject.id}
-    return session.query(rel).filter_by(**info).all()
-    # return session.query(getTableInstance_REL(languageObject, getTableObject(targetLanguage))).filter_by(**{'ref_word_id' : getTableInstance_QUE(session, baseLanguage, query).ref_word.id}).all()
+
+    return session.query(rel) \
+                    .filter_by(**info) \
+                    .all()
+
+    # return session.query(getTableInstance_REL(languageObject, getTableObject(targetLanguage))) \
+    #               .filter_by(**{'ref_word_id' : getTableInstance_QUE(session, baseLanguage, query) \
+    #               .ref_word.id}) \
+    #               .all()

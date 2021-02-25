@@ -195,7 +195,7 @@ def addRow(session:SessionObject, tableName:str, word:str, ref_word:str, others:
         session.add(obj)
 
         session.commit()
-        session.close()
+
 
     elif (not existingEntryQuery(session, 'word_id', {'word' : ref_word})) and (not addWID):
         raise IOError
@@ -204,7 +204,6 @@ def addRow(session:SessionObject, tableName:str, word:str, ref_word:str, others:
 
         session.add(obj)
         session.commit()
-        session.close()
 
 def updateRow(session:SessionObject, model:str, query:dict, values:dict):
     """
@@ -256,3 +255,5 @@ def REL_getTrad(session:SessionObject, baseLanguage:str, targetLanguage:str, que
     rel = getRelationship(languageObject, getTableObject(targetLanguage))
     info = {'ref_word_id' : languageObject.id}
     return session.query(rel).filter_by(**info).all()
+
+

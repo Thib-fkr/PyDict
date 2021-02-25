@@ -4,6 +4,9 @@
 import sys
 import argparse
 import logging
+from Classes.baseTest import Session
+from Functions.functionModule import
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -30,6 +33,7 @@ def main():
                         help='indicate wherever the data is incomplete')
 
     args = parser.parse_args()
+    session = Session()
 
     logger = logging.getLogger(__name__)
     if args.debug:
@@ -40,15 +44,20 @@ def main():
 
     if args.edit:
         pass
+
     if args.add:
         pass
+
     if args.look:
         pass
+
     if args.view:
         pass
+
     if args.complete:
         pass
 
+    session.close()
 
 if __name__ == "__main__":
     sys.exit(main())

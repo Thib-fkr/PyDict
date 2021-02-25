@@ -2,24 +2,17 @@
 #
 #
 
-from sqlalchemy import MetaData
 from sqlalchemy.inspection import inspect
-from sqlalchemy import literal
 
-from sqlalchemy.orm import Mapper
-from sqlalchemy.orm.state import InstanceState
-
-from Classes.baseTest import Session, engine, Base
-from Classes.languageClass import Language
 from Classes.idClass import Word_ID
 
 # The next imports are only to be used for static typing
-from typing import Union
-
-from Classes.languageClass import French as FrenchObject, English as EnglishObject, Dutch as DutchObject
 from sqlalchemy.orm.session import Session as SessionObject
-from sqlalchemy.sql.schema import Table as TableObject
-from sqlalchemy.engine.base import Engine as EngineObject
+
+# from sqlalchemy.sql.schema import Table as TableObject
+# from sqlalchemy.engine.base import Engine as EngineObject
+# from sqlalchemy.orm.state import InstanceState as InstanceObject
+# from sqlalchemy.orm import Mapper as MapperObject
 
 def tableExist(tableName:str):
     """
@@ -31,6 +24,7 @@ def tableExist(tableName:str):
     --------
     existance : whether the table exist or not (bool)
     """
+    from Classes.baseTest import engine
     return engine.has_table(tableName)
 
 def getTable(tableName:str):
@@ -46,6 +40,7 @@ def getTable(tableName:str):
     -------
     ValueError : if the table does not exist
     """
+    from sqlalchemy import MetaData
     if tableExist(tableName):
         meta = MetaData()
         meta.reflect(bind=engine)
@@ -66,11 +61,12 @@ def getTableObject(tableName:str):
     ---------
     table class : any of the table class objects initialized by the program ()
     """
+    from Classes.baseTest import Base
     for table in Base._decl_class_registry.values():
         if hasattr(table, '__table__') and table.__table__.fullname == tableName:
             return table
 
-def getTableInstance_REL(obj:Language.factory, target:Language.factory):
+def getTableInstance_REL(obj, target):
     """
     Get table instance based on the relationships
     Parameters :
@@ -133,6 +129,7 @@ def entryExist(session:SessionObject, model:str, query:dict):
     --------
     entryExists : (bool)
     """
+    from sqlalchemy import literal
     q = session.query(getTable(model)).filter_by(**query)
     return session.query(literal(True)).filter(q.exists()).scalar()
 
@@ -148,6 +145,7 @@ def getWordIDObject(session:SessionObject, word:str):
     --------
     Word_ID : (PYDICT.Classes.idClass.Word_ID)
     """
+
     query = {'word' : word}
     if entryExist(session, 'word_id', query):
         return session.query(Word_ID).filter_by(**query).one()
@@ -186,6 +184,7 @@ def addRow(session:SessionObject, tableName:str, word:str, ref_word:str, others:
     ref_word : reference word (str)
     others : informations about the word (dict)
     """
+    from Classes.languageClass import Language
     if (not entryExist(session, 'word_id', {'word' : ref_word})) and addWID:
 
         WIDobj = Word_ID(ref_word)

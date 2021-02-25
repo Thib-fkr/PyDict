@@ -84,6 +84,7 @@ def getTableInstance_REL(obj, target):
     for rel in inspect(obj).mapper.relationships:
         if rel.mapper.class_ == target:
             return rel.mapper.local_table
+    # return [rel.mapper.local_table for rel in inspect(obj).mapper.relationships if rel.mapper.class_ == target]
 
 def getTableInstance_QUE(session:SessionObject, model:str, query:dict):
     """
@@ -116,6 +117,7 @@ def getColumnsObject(tableName:str, columnName:str):
         if columnName == col:
             inspec = inspect(getTable(tableName)).c
             return inspec[col]
+    # return [inspect(getTable(tableName)).c[col] for col in getColumnsNames(tableName) if if columnName == col]
 
 def entryExist(session:SessionObject, model:str, query:dict):
     """
@@ -132,6 +134,7 @@ def entryExist(session:SessionObject, model:str, query:dict):
     from sqlalchemy import literal
     q = session.query(getTable(model)).filter_by(**query)
     return session.query(literal(True)).filter(q.exists()).scalar()
+    # return session.query(literal(True)).filter(session.query(getTable(model)).filter_by(**query).exists()).scalar()
 
 def getWordIDObject(session:SessionObject, word:str):
     """
@@ -241,6 +244,7 @@ def QUE_getTrad(session:SessionObject, baseLanguage:str, targetLanguage:str, que
     wordID = dynamicQuery(session, baseLanguage, query)[0]['ref_word_id']
     info = {'ref_word_id' : wordID}
     return session.query(rel).filter_by(**info).all()
+    # return session.query(rel).filter_by(**{'ref_word_id' : dynamicQuery(session, baseLanguage, query)[0]['ref_word_id']}).all()
 
 def REL_getTrad(session:SessionObject, baseLanguage:str, targetLanguage:str, query:dict):
     """
@@ -254,3 +258,4 @@ def REL_getTrad(session:SessionObject, baseLanguage:str, targetLanguage:str, que
     rel = getTableInstance_REL(languageObject, getTableObject(targetLanguage))
     info = {'ref_word_id' : languageObject.id}
     return session.query(rel).filter_by(**info).all()
+    # return session.query(getTableInstance_REL(languageObject, getTableObject(targetLanguage))).filter_by(**{'ref_word_id' : getTableInstance_QUE(session, baseLanguage, query).ref_word.id}).all()

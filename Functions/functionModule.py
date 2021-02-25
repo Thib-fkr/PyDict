@@ -21,58 +21,6 @@ from sqlalchemy.orm.session import Session as SessionObject
 from sqlalchemy.sql.schema import Table as TableObject
 from sqlalchemy.engine.base import Engine as EngineObject
 
-def getTableObject(tableName:str):
-    """
-    Get table class object by it's name
-    Parameters :
-    ------------
-    tableName : name of the table (str)
-    Outputs :
-    ---------
-    table class : any of the table class objects initialized by the program ()
-    """
-    for table in Base._decl_class_registry.values():
-        if hasattr(table, '__table__') and table.__table__.fullname == tableName:
-            return table
-
-def getRelationship(obj:Language.factory, target:Language.factory):
-    """
-    Get table instance based on the relationships
-    Parameters :
-    ------------
-    obj :
-    target :
-    Outputs :
-    ---------
-    Notes :
-    -------
-    I might have to rewrite this function in a more efficient/simple way.
-    Like using queries to get the object for example.
-    """
-
-    for rel in inspect(obj).mapper.relationships:
-        if rel.mapper.class_ == target:
-            return rel.mapper.local_table
-
-def getColumnsNames(tableName:str):
-    """
-    Get all the available columns in a specific table
-    Parameters :
-    ------------
-    tableName : name of the table (str)
-    Outputs :
-    ---------
-    ColumnsName : (list)
-    """
-    return [column.name for column in inspect(getTable(tableName)).c]
-
-def getColumnsObject(tableName:str, columnName:str):
-    """"""
-    for col in getColumnsNames(tableName):
-        if columnName == col:
-            inspec = inspect(getTable(tableName)).c
-            return inspec[col]
-
 def tableExist(tableName:str):
     """
     Check if a table exist
@@ -108,28 +56,40 @@ def getTable(tableName:str):
     else:
         raise ValueError
 
-def dynamicQuery(session:SessionObject, model:str, query:dict):
+def getTableObject(tableName:str):
     """
-    Allow to get informations from the database in a way that is more "user/develloper -friendly"
+    Get table class object by it's name
     Parameters :
     ------------
-    session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
-    model : Table where you want to get the informations from (str)\n
-    query : How to filter wanted informations(dict)
+    tableName : name of the table (str)
     Outputs :
     ---------
-    result : result of the query (list)
+    table class : any of the table class objects initialized by the program ()
+    """
+    for table in Base._decl_class_registry.values():
+        if hasattr(table, '__table__') and table.__table__.fullname == tableName:
+            return table
+
+def getTableInstance_REL(obj:Language.factory, target:Language.factory):
+    """
+    Get table instance based on the relationships
+    Parameters :
+    ------------
+    obj :
+    target :
+    Outputs :
+    ---------
     Notes :
     -------
-    The query (type:dictonnary) has to correspond to the following pattern :\n
-    {
-        column : value
-    }\n
-    (with both "column" and "value" being strings)
+    I might have to rewrite this function in a more efficient/simple way.
+    Like using queries to get the object for example.
     """
-    return session.query(getTable(model)).filter_by(**query).all()
 
-def getLanguageObject(session:SessionObject, model:str, query:dict):
+    for rel in inspect(obj).mapper.relationships:
+        if rel.mapper.class_ == target:
+            return rel.mapper.local_table
+
+def getTableInstance_QUE(session:SessionObject, model:str, query:dict):
     """
     Get an instance of a table object
     Parameters :
@@ -142,7 +102,26 @@ def getLanguageObject(session:SessionObject, model:str, query:dict):
     """
     return session.query(getTableObject(model)).filter_by(**query).one()
 
-def existingEntryQuery(session:SessionObject, model:str, query:dict):
+def getColumnsNames(tableName:str):
+    """
+    Get all the available columns in a specific table
+    Parameters :
+    ------------
+    tableName : name of the table (str)
+    Outputs :
+    ---------
+    ColumnsName : (list)
+    """
+    return [column.name for column in inspect(getTable(tableName)).c]
+
+def getColumnsObject(tableName:str, columnName:str):
+    """"""
+    for col in getColumnsNames(tableName):
+        if columnName == col:
+            inspec = inspect(getTable(tableName)).c
+            return inspec[col]
+
+def entryExist(session:SessionObject, model:str, query:dict):
     """
     Check if an entry matches the info given as 'query'
     Parameters :
@@ -170,10 +149,31 @@ def getWordIDObject(session:SessionObject, word:str):
     Word_ID : (PYDICT.Classes.idClass.Word_ID)
     """
     query = {'word' : word}
-    if existingEntryQuery(session, 'word_id', query):
+    if entryExist(session, 'word_id', query):
         return session.query(Word_ID).filter_by(**query).one()
     else:
         raise ValueError
+
+def dynamicQuery(session:SessionObject, model:str, query:dict):
+    """
+    Allow to get informations from the database in a way that is more "user/develloper -friendly"
+    Parameters :
+    ------------
+    session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
+    model : Table where you want to get the informations from (str)\n
+    query : How to filter wanted informations(dict)
+    Outputs :
+    ---------
+    result : result of the query (list)
+    Notes :
+    -------
+    The query (type:dictonnary) has to correspond to the following pattern :\n
+    {
+        column : value
+    }\n
+    (with both "column" and "value" being strings)
+    """
+    return session.query(getTable(model)).filter_by(**query).all()
 
 def addRow(session:SessionObject, tableName:str, word:str, ref_word:str, others:dict, addWID=False):
     """
@@ -186,7 +186,7 @@ def addRow(session:SessionObject, tableName:str, word:str, ref_word:str, others:
     ref_word : reference word (str)
     others : informations about the word (dict)
     """
-    if (not existingEntryQuery(session, 'word_id', {'word' : ref_word})) and addWID:
+    if (not entryExist(session, 'word_id', {'word' : ref_word})) and addWID:
 
         WIDobj = Word_ID(ref_word)
         obj = Language.factory(tableName, word, WIDobj, **others)
@@ -197,7 +197,7 @@ def addRow(session:SessionObject, tableName:str, word:str, ref_word:str, others:
         session.commit()
 
 
-    elif (not existingEntryQuery(session, 'word_id', {'word' : ref_word})) and (not addWID):
+    elif (not entryExist(session, 'word_id', {'word' : ref_word})) and (not addWID):
         raise IOError
     else:
         obj = Language.factory(tableName, word, getWordIDObject(session,'word_id', ref_word), **others)
@@ -251,9 +251,7 @@ def REL_getTrad(session:SessionObject, baseLanguage:str, targetLanguage:str, que
     Outputs :
     ---------
     """
-    languageObject = getLanguageObject(session, baseLanguage, query).ref_word
-    rel = getRelationship(languageObject, getTableObject(targetLanguage))
+    languageObject = getTableInstance_QUE(session, baseLanguage, query).ref_word
+    rel = getTableInstance_REL(languageObject, getTableObject(targetLanguage))
     info = {'ref_word_id' : languageObject.id}
     return session.query(rel).filter_by(**info).all()
-
-

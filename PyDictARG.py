@@ -5,11 +5,11 @@ import sys
 import argparse
 import logging
 from Classes.baseTest import Session
-from Functions.functionModule import
+
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description='', epilog='')
 
     # How to know how many nargs ?
 
@@ -41,21 +41,32 @@ def main():
                             format="[%(levelname)s]%(asctime)s : %(message)s",\
                             level=logging.DEBUG)
         logger.setLevel(logging.DEBUG)
+    while True:
+        u = input('input :')
+        if args.edit:
+            # PyDict.py BaseLanguage -e [targetLanguage,]
+            # display available column for the target language
+            # input with the wanted information
+            pass
 
-    if args.edit:
-        pass
+        if args.add:
+            # PyDict.py english -a [ID, word:value, info:value, info:value, ..., 0/1]
+            pass
 
-    if args.add:
-        pass
+        if args.look:
+            # PyDict.py english -l [info:value, ...]
+            pass
 
-    if args.look:
-        pass
+        if args.view:
+            # PyDict.py english -v [info:value, ...]
+            pass
 
-    if args.view:
-        pass
+        if args.complete:
+            # PyDict.py english -c
+            pass
+        if u == 'exit':
+            break
 
-    if args.complete:
-        pass
 
     session.close()
 

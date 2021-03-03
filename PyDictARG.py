@@ -14,6 +14,9 @@ def main():
     # How to know how many nargs ?
 
     # I will re-write these help messages later
+    parser.add_argument('language', dest='language', action='store',\
+                        help='base language')
+
     parser.add_argument('-d','--debug', dest='debug', action='store_true',\
                         help='enable debug log in a log file')
 

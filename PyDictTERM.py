@@ -2,7 +2,7 @@
 #
 #
 
-def input_parser(user_input):
+def input_parser(user_input:list, debug=False, exit=False):
     """
     Format :
     --------
@@ -14,7 +14,36 @@ def input_parser(user_input):
     --------
 
     """
-    return action, info, debug
+    infos = {}
+    for line in user_input:
+
+        line = line.split()
+        infos[line[0]] = {}
+
+        for info in range(len(line)):
+            if info == 0:
+                continue
+            name, value = (line[info].split(':')[n] for n in range(2))
+
+            if line[0] == 'add':
+                pass
+            elif line[0] == 'edit':
+                pass
+            elif line[0] == 'look':
+                pass
+            elif line[0] == 'view':
+                pass
+            elif line[0] == 'help':
+                pass
+            elif line[0] == 'exit':
+                exit = True
+            elif line[0] == 'debug':
+                debug = True
+
+
+
+
+    return actions, info, debug, exit
 
 
 def main():
@@ -23,7 +52,7 @@ def main():
         user_input_list = []
 
         while True:
-            user_input = input('')
+            user_input = input('$')
             if user_input == 'ex\n':
                 break
             else:

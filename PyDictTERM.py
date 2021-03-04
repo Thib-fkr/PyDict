@@ -14,31 +14,44 @@ def input_parser(user_input:list, debug=False, exit=False):
     --------
 
     """
+    def name_value_parser(line, info):
+        return (line[info].split(':')[n] for n in range(2))
     infos = {}
     for line in user_input:
 
         line = line.split()
         infos[line[0]] = {}
+        infos[line[0]]['language'] = line[1]
+        if line[0] == 'help':
+            pass
+        elif line[0] == 'exit':
+            exit = True
+        elif line[0] == 'debug':
+            debug = True
 
         for info in range(len(line)):
-            if info == 0:
+            if info in [0,1]:
                 continue
-            name, value = (line[info].split(':')[n] for n in range(2))
+            if line[0] in ['add', 'look']:
+                name, value = name_value_parser(line, info)
+                infos[line[0]][name] = value
 
-            if line[0] == 'add':
-                pass
             elif line[0] == 'edit':
-                pass
-            elif line[0] == 'look':
-                pass
+                if info == 2:
+                    for values in line[info].split(','):
+                        name, value = name_value_parser(line, info)
+                        infos[line[0]]['search'] = {}
+                        infos[line[0]]['search'][name] = value
+                else:
+                    for values in line[info].split(','):
+                        name, value = name_value_parser(line, info)
+                        infos[line[0]]['to_edit'] = {}
+                        infos[line[0]]['to_edit'][name] = value
+
             elif line[0] == 'view':
                 pass
-            elif line[0] == 'help':
-                pass
-            elif line[0] == 'exit':
-                exit = True
-            elif line[0] == 'debug':
-                debug = True
+    return infos, debug, exit
+
 
 
 

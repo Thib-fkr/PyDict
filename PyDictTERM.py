@@ -1,7 +1,7 @@
 #
 #
 #
-
+import sys
 def input_parser(user_input:list, debug=False, exit=False):
     """
     Format :
@@ -77,14 +77,15 @@ def main():
 
         while True:
             user_input = input('$')
-            if user_input == 'ex\n':
+            if user_input == 'ex':
                 break
             else:
-                user_input_list.append(user_input[:len(user_input)-1]) if user_input != '\n'
+                if user_input != '\n' and user_input != '':
+                    user_input_list.append(user_input[:len(user_input)])
 
 
-        actions, infos, debug, exit = input_list_parser(user_input_list)
-
+        infos, debug, exit = input_parser(user_input_list)
+        actions = [a for a in infos]
         if debug:
             pass
 
@@ -96,23 +97,23 @@ def main():
                 # PyDict.py BaseLanguage -e [targetLanguage,]
                 # display available column for the target language
                 # input with the wanted information
-                pass
+                print(infos[action])
 
             if action == 'add':
                 # PyDict.py english -a [ID, word:value, info:value, info:value, ..., 0/1]
-                pass
+                print(infos[action])
 
             if action == 'look':
                 # PyDict.py english -l [info:value, ...]
-                pass
+                print(infos[action])
 
             if action == 'view':
                 # PyDict.py english -v [info:value, ...]
-                pass
+                print(infos[action])
 
             if action == 'complete':
                 # PyDict.py english -c
-                pass
+                print(infos[action])
         if exit:
             break
 

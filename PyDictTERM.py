@@ -16,47 +16,58 @@ def input_parser(user_input:list, debug=False, exit=False):
     """
     def name_value_parser(line, info):
         return (line[info].split(':')[n] for n in range(2))
+
     infos = {}
+    # Iterate over each input the user made
     for line in user_input:
 
         line = line.split()
-        infos[line[0]] = {}
-        infos[line[0]]['language'] = line[1]
+        print(line)
+        # Check if there is a special keyword
         if line[0] == 'help':
-            pass
+            print('help')
+
         elif line[0] == 'exit':
             exit = True
         elif line[0] == 'debug':
             debug = True
+        else:
+
+            # Create a 'action' section in the 'info' dict and store the source language
+            infos[line[0]] = {}
+            infos[line[0]]['language'] = line[1]
 
         for info in range(len(line)):
             if info in [0,1]:
                 continue
+
+            # if action in [add, look]
             if line[0] in ['add', 'look']:
                 name, value = name_value_parser(line, info)
                 infos[line[0]][name] = value
 
             elif line[0] == 'edit':
+
+                try:
+                    infos[line[0]]['search']
+                    infos[line[0]]['to_edit']
+                except KeyError:
+                    infos[line[0]]['search'] = {}
+                    infos[line[0]]['to_edit'] = {}
+
                 if info == 2:
                     for values in line[info].split(','):
-                        name, value = name_value_parser(line, info)
-                        infos[line[0]]['search'] = {}
+                        name, value = (values.split(':')[n] for n in range(2))
                         infos[line[0]]['search'][name] = value
                 else:
                     for values in line[info].split(','):
-                        name, value = name_value_parser(line, info)
-                        infos[line[0]]['to_edit'] = {}
+                        name, value = (values.split(':')[n] for n in range(2))
                         infos[line[0]]['to_edit'][name] = value
 
             elif line[0] == 'view':
                 pass
     return infos, debug, exit
 
-
-
-
-
-    return actions, info, debug, exit
 
 
 def main():

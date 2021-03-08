@@ -2,6 +2,9 @@
 #
 #
 import sys
+from Classes.baseTest import Session
+from Functions.functionModule import updateRow, addRow, getColumnsNames, REL_getTrad, QUE_getTrad
+
 def input_parser(user_input:list, debug=False, exit=False):
     """
     Format :
@@ -42,9 +45,15 @@ def input_parser(user_input:list, debug=False, exit=False):
                 continue
 
             # if action in [add, look]
-            if line[0] in ['add', 'look']:
+            if line[0] == 'look':
                 name, value = name_value_parser(line, info)
                 infos[line[0]][name] = value
+
+            elif line[0] == 'add':
+                pass
+
+            elif line[0] == 'trad':
+                pass
 
             elif line[0] == 'edit':
 
@@ -66,6 +75,7 @@ def input_parser(user_input:list, debug=False, exit=False):
 
             elif line[0] == 'view':
                 pass
+
     return infos, debug, exit
 
 
@@ -90,6 +100,8 @@ def main():
             pass
 
         for action in actions:
+            session = Session()
+
             if action == 'help':
                 pass
 
@@ -97,15 +109,15 @@ def main():
                 # PyDict.py BaseLanguage -e [targetLanguage,]
                 # display available column for the target language
                 # input with the wanted information
-                print(infos[action])
+                updateRow(session, infos[action]['language'], infos[action]['search'], infos[action]['to_edit'])
 
             if action == 'add':
                 # PyDict.py english -a [ID, word:value, info:value, info:value, ..., 0/1]
-                print(infos[action])
+                addRow(session,...)
 
             if action == 'look':
                 # PyDict.py english -l [info:value, ...]
-                print(infos[action])
+                print(infos)
 
             if action == 'view':
                 # PyDict.py english -v [info:value, ...]

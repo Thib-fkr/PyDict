@@ -2,8 +2,9 @@
 #
 #
 import sys
+from time import time
 from Classes.baseTest import Session
-from Functions.functionModule import updateRow, addRow, getColumnsNames, REL_getTrad, QUE_getTrad
+from Functions.functionModule import updateRow, addRow, getColumnsNames, REL_getTrad, QUE_getTrad, dynamicQuery
 
 def input_parser(user_input:list, debug=False, exit=False):
     """
@@ -45,15 +46,35 @@ def input_parser(user_input:list, debug=False, exit=False):
                 continue
 
             # if action in [add, look]
-            if line[0] == 'look':
+            if line[0] == 'add':
                 name, value = name_value_parser(line, info)
-                infos[line[0]][name] = value
+                if name in ['word', 'ref']:
+                    infos[line[0]][name] = value
+                else:
+                    try:
+                        infos[line[0]]['other']
+                    except KeyError:
+                        infos[line[0]]['other'] = {}
+                    infos[line[0]]['other'][name] = value
 
-            elif line[0] == 'add':
-                pass
+            elif line[0] == 'look':
+                try:
+                    infos[line[0]]['other']
+                except KeyError:
+                    infos[line[0]]['other'] = {}
+                name, value = name_value_parser(line, info)
+                infos[line[0]]['other'][name] = value
 
             elif line[0] == 'trad':
-                pass
+                name, value = name_value_parser(line, info)
+                if name == 'target':
+                    infos[line[0]][name] = value
+                else:
+                    try:
+                        infos[line[0]]['other']
+                    except KeyError:
+                        infos[line[0]]['other'] = {}
+                    infos[line[0]]['other'][name] = value
 
             elif line[0] == 'edit':
 
@@ -77,7 +98,6 @@ def input_parser(user_input:list, debug=False, exit=False):
                 pass
 
     return infos, debug, exit
-
 
 
 def main():
@@ -109,15 +129,39 @@ def main():
                 # PyDict.py BaseLanguage -e [targetLanguage,]
                 # display available column for the target language
                 # input with the wanted information
+
+                print('[+] {} : {}'.format(action, infos[action]))
+                start = time.time()
                 updateRow(session, infos[action]['language'], infos[action]['search'], infos[action]['to_edit'])
+                print('execution time : {}'.format(time.time() - start))
 
             if action == 'add':
                 # PyDict.py english -a [ID, word:value, info:value, info:value, ..., 0/1]
-                addRow(session,...)
+                print('[+] {} : {}'.format(action, infos[action]))
+                start = time.time()
+                addRow(session,infos[action]['language'],infos[action]['word'],infos[action]['ref'],infos[action]['others'], addWID=True)
+                print('execution time : {}'.format(time.time() - start))
 
             if action == 'look':
                 # PyDict.py english -l [info:value, ...]
-                print(infos)
+                print('[+] {} : {}'.format(action, infos[action]))
+                start = time.time()
+                print(dynamicQuery(session, infos[action]['language'], infos[action]['other']))
+                print('execution time : {}'.format(time.time() - start))
+
+            if action == 'trad':
+                # PyDict.py english -l [info:value, ...]
+
+                print('[+] {} : {}'.format(action, infos[action]))
+                print('[+] Relation trad starting...')
+                start = time.time()
+                print(REL_getTrad(session, infos[action]['language'], infos[action]['target'], infos[action]['other']))
+                print('execution time : {}'.format(time.time() - start))
+
+                print('[+] query trad starting...')
+                start = time.time()
+                print(QUE_getTrad(session, infos[action]['language'], infos[action]['target'], infos[action]['other']))
+                print('execution time : {}'.format(time.time() - start))
 
             if action == 'view':
                 # PyDict.py english -v [info:value, ...]

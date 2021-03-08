@@ -2,7 +2,7 @@
 #
 #
 import sys
-from time import time
+import time
 from Classes.baseTest import Session
 from Functions.functionModule import updateRow, addRow, getColumnsNames, REL_getTrad, QUE_getTrad, dynamicQuery
 
@@ -139,7 +139,7 @@ def main():
                 # PyDict.py english -a [ID, word:value, info:value, info:value, ..., 0/1]
                 print('[+] {} : {}'.format(action, infos[action]))
                 start = time.time()
-                addRow(session,infos[action]['language'],infos[action]['word'],infos[action]['ref'],infos[action]['others'], addWID=True)
+                addRow(session,infos[action]['language'],infos[action]['word'],infos[action]['ref'],infos[action]['other'], addWID=True)
                 print('execution time : {}'.format(time.time() - start))
 
             if action == 'look':
@@ -155,7 +155,7 @@ def main():
                 print('[+] {} : {}'.format(action, infos[action]))
                 print('[+] Relation trad starting...')
                 start = time.time()
-                print(REL_getTrad(session, infos[action]['language'], infos[action]['target'], infos[action]['other']))
+                #print(REL_getTrad(session, infos[action]['language'], infos[action]['target'], infos[action]['other']))
                 print('execution time : {}'.format(time.time() - start))
 
                 print('[+] query trad starting...')
@@ -171,8 +171,8 @@ def main():
                 # PyDict.py english -c
                 print(infos[action])
         if exit:
+            session.close()
             break
-
 
 
 if __name__ == "__main__":

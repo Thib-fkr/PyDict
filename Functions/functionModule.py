@@ -42,7 +42,7 @@ def getTable(tableName:str):
     ValueError : if the table does not exist
     """
     from sqlalchemy import MetaData
-
+    from Classes.baseTest import engine
     if tableExist(tableName):
 
         meta = MetaData()
@@ -230,7 +230,7 @@ def addRow(session:SessionObject, tableName:str, word:str, ref_word:str, others:
         raise IOError
 
     else:
-        obj = Language.factory(tableName, word, getWordIDObject(session,'word_id', ref_word), **others)
+        obj = Language.factory(tableName, word, getWordIDObject(session, ref_word), **others)
 
         session.add(obj)
         session.commit()
@@ -275,11 +275,10 @@ def QUE_getTrad(session:SessionObject, baseLanguage:str, targetLanguage:str, que
     ---------
     """
 
-    wordID = dynamicQuery(session, baseLanguage, query)[0]['ref_word_id']
-
+    wordID = dynamicQuery(session, baseLanguage, query)[0][0]
     info = {'ref_word_id' : wordID}
 
-    return session.query(rel) \
+    return session.query(getTable(targetLanguage)) \
                     .filter_by(**info) \
                     .all()
 

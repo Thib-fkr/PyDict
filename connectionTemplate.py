@@ -3,7 +3,7 @@
 #
 
 from Classes.baseTest import Session, engine, Base
-
+import time
 from Classes.idClass import Word_ID
 from Classes.languageClass import French, English, Dutch
 
@@ -12,10 +12,6 @@ from Functions.functionModule import *
 
 def main():
     session = Session()
-
-
-
-
 
 
 """
@@ -36,9 +32,9 @@ def main():
 
     # -------------------------------------BEGIN------------------------------------------------------
 
-    
+
     # Create wanted objects
-    
+
     Hello = Word_ID('hello')
     Appel = Word_ID('appel')
     Banana = Word_ID('banana')
@@ -89,7 +85,6 @@ def main():
 
     session.add(sBonjour)
     session.add(sHello)
-    
     # --------------------------------------END-------------------------------------------------------
 
     # Commit and close the session

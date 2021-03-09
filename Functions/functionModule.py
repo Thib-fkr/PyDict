@@ -3,9 +3,10 @@
 #
 
 from sqlalchemy.inspection import inspect
-
+from Classes.baseTest import Base
 from Classes.idClass import Word_ID
-
+from sqlalchemy import MetaData
+from Classes.baseTest import engine
 # The next imports are only to be used for static typing
 from sqlalchemy.orm.session import Session as SessionObject
 
@@ -24,8 +25,6 @@ def tableExist(tableName:str):
     --------
     existance : whether the table exist or not (bool)
     """
-    from Classes.baseTest import engine
-
     return engine.has_table(tableName)
 
 def getTable(tableName:str):
@@ -41,8 +40,6 @@ def getTable(tableName:str):
     -------
     ValueError : if the table does not exist
     """
-    from sqlalchemy import MetaData
-    from Classes.baseTest import engine
     if tableExist(tableName):
 
         meta = MetaData()
@@ -65,12 +62,10 @@ def getTableObject(tableName:str):
     ---------
     table class : any of the table class objects initialized by the program ()
     """
-    from Classes.baseTest import Base
-
-    for table in Base._decl_class_registry.values():
-        if hasattr(table, '__table__') and table.__table__.fullname == tableName:
-
-            return table
+    for _class in Base._decl_class_registry.values():
+        if hasattr(_class, '__table__') and tableName == _class.__table__.fullname and _class is not None:
+            return _class
+    return ValueError('Could not find table')
 
 def getTableInstance_REL(obj, target):
     """
@@ -96,7 +91,7 @@ def getTableInstance_REL(obj, target):
     #       for rel in inspect(obj).mapper.relationships \
     #       if rel.mapper.class_ == target]
 
-def getTableInstance_QUE(session:SessionObject, model:str, query:dict):
+def getTableInstance_QUE(session:SessionObject, model:str, queryy:dict):
     """
     Get an instance of a table object
     Parameters :
@@ -108,8 +103,8 @@ def getTableInstance_QUE(session:SessionObject, model:str, query:dict):
     ---------
     """
     return session.query(getTableObject(model)) \
-                .filter_by(**query) \
-                .one()
+                    .filter_by(**queryy) \
+                    .one()
 
 def getColumnsNames(tableName:str):
     """
@@ -294,7 +289,6 @@ def REL_getTrad(session:SessionObject, baseLanguage:str, targetLanguage:str, que
     Outputs :
     ---------
     """
-
     languageObject = getTableInstance_QUE(session, baseLanguage, query).ref_word
     rel = getTableInstance_REL(languageObject, getTableObject(targetLanguage))
 

@@ -1,10 +1,12 @@
 #
 #
 #
-import sys
+from Classes.baseTest import Session, engine, Base
 import time
-from Classes.baseTest import Session
 from Functions.functionModule import updateRow, addRow, getColumnsNames, REL_getTrad, QUE_getTrad, dynamicQuery
+# Loading classes to dodge Error from getTableObject function due to dynamically created class...
+# https://stackoverflow.com/questions/51296432/flask-sqlalchemy-db-model-decl-class-registry-values-and-db-metadata-tables-a
+from Classes.languageClass import *
 
 def input_parser(user_input:list, debug=False, exit=False):
     """
@@ -101,6 +103,7 @@ def input_parser(user_input:list, debug=False, exit=False):
 
 
 def main():
+    session = Session()
     print('')
     while True:
         user_input_list = []
@@ -113,54 +116,39 @@ def main():
                 if user_input != '\n' and user_input != '':
                     user_input_list.append(user_input[:len(user_input)])
 
-
         infos, debug, exit = input_parser(user_input_list)
         actions = [a for a in infos]
+
         if debug:
             pass
 
         for action in actions:
-            session = Session()
 
             if action == 'help':
                 pass
 
             if action == 'edit':
                 # PyDict.py BaseLanguage -e [targetLanguage,]
-                # display available column for the target language
-                # input with the wanted information
-
-                print('[+] {} : {}'.format(action, infos[action]))
                 start = time.time()
                 updateRow(session, infos[action]['language'], infos[action]['search'], infos[action]['to_edit'])
                 print('execution time : {}'.format(time.time() - start))
 
             if action == 'add':
                 # PyDict.py english -a [ID, word:value, info:value, info:value, ..., 0/1]
-                print('[+] {} : {}'.format(action, infos[action]))
                 start = time.time()
                 addRow(session,infos[action]['language'],infos[action]['word'],infos[action]['ref'],infos[action]['other'], addWID=True)
                 print('execution time : {}'.format(time.time() - start))
 
             if action == 'look':
                 # PyDict.py english -l [info:value, ...]
-                print('[+] {} : {}'.format(action, infos[action]))
                 start = time.time()
                 print(dynamicQuery(session, infos[action]['language'], infos[action]['other']))
                 print('execution time : {}'.format(time.time() - start))
 
             if action == 'trad':
                 # PyDict.py english -l [info:value, ...]
-
-                print('[+] {} : {}'.format(action, infos[action]))
-                print('[+] Relation trad starting...')
                 start = time.time()
-                #print(REL_getTrad(session, infos[action]['language'], infos[action]['target'], infos[action]['other']))
-                print('execution time : {}'.format(time.time() - start))
-
-                print('[+] query trad starting...')
-                start = time.time()
-                print(QUE_getTrad(session, infos[action]['language'], infos[action]['target'], infos[action]['other']))
+                print(REL_getTrad(session, infos[action]['language'], infos[action]['target'], infos[action]['other']))
                 print('execution time : {}'.format(time.time() - start))
 
             if action == 'view':
@@ -176,4 +164,4 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

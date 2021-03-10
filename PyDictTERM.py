@@ -129,27 +129,19 @@ def main():
 
             if action == 'edit':
                 # PyDict.py BaseLanguage -e [targetLanguage,]
-                start = time.time()
                 updateRow(session, infos[action]['language'], infos[action]['search'], infos[action]['to_edit'])
-                print('execution time : {}'.format(time.time() - start))
 
             if action == 'add':
                 # PyDict.py english -a [ID, word:value, info:value, info:value, ..., 0/1]
-                start = time.time()
                 addRow(session,infos[action]['language'],infos[action]['word'],infos[action]['ref'],infos[action]['other'], addWID=True)
-                print('execution time : {}'.format(time.time() - start))
 
             if action == 'look':
                 # PyDict.py english -l [info:value, ...]
-                start = time.time()
                 print(dynamicQuery(session, infos[action]['language'], infos[action]['other']))
-                print('execution time : {}'.format(time.time() - start))
 
             if action == 'trad':
                 # PyDict.py english -l [info:value, ...]
-                start = time.time()
                 print(REL_getTrad(session, infos[action]['language'], infos[action]['target'], infos[action]['other']))
-                print('execution time : {}'.format(time.time() - start))
 
             if action == 'view':
                 # PyDict.py english -v [info:value, ...]

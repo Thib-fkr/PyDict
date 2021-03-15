@@ -28,11 +28,9 @@ def input_parser(user_input:list, debug=False, exit=False):
     for line in user_input:
 
         line = line.split()
-        print(line)
         # Check if there is a special keyword
         if line[0] == 'help':
             print('help')
-
         elif line[0] == 'exit':
             exit = True
         elif line[0] == 'debug':
@@ -47,7 +45,6 @@ def input_parser(user_input:list, debug=False, exit=False):
             if info in [0,1]:
                 continue
 
-            # if action in [add, look]
             if line[0] == 'add':
                 name, value = name_value_parser(line, info)
                 if name in ['word', 'ref']:
@@ -127,7 +124,7 @@ def main():
         actions = [a for a in infos]
 
         logger = logging.getLogger(__name__)
-        if args.debug:
+        if debug:
             logging.basicConfig(filename='pydict-debug.log', filemode='a',\
                                 format="[%(levelname)s]%(asctime)s : %(message)s",\
                                 level=logging.DEBUG)

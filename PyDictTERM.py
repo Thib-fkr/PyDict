@@ -2,7 +2,7 @@
 #
 #
 from Classes.baseTest import Session, engine, Base
-import time
+import time, logging
 from Functions.functionModule import updateRow, addRow, getColumnsNames, REL_getTrad, QUE_getTrad, dynamicQuery
 # Loading classes to dodge Error from getTableObject function due to dynamically created class...
 # https://stackoverflow.com/questions/51296432/flask-sqlalchemy-db-model-decl-class-registry-values-and-db-metadata-tables-a
@@ -101,6 +101,13 @@ def input_parser(user_input:list, debug=False, exit=False):
 
     return infos, debug, exit
 
+def result_format(result:list):
+    """"""
+    lenght = max([len(element) for element in result])
+    print('|'+ lenght*'=' + '|')
+    for element in result:
+        print('|'+ element + (lenght-len(element))*' ' + '|')
+
 
 def main():
     session = Session()
@@ -119,8 +126,12 @@ def main():
         infos, debug, exit = input_parser(user_input_list)
         actions = [a for a in infos]
 
-        if debug:
-            pass
+        logger = logging.getLogger(__name__)
+        if args.debug:
+            logging.basicConfig(filename='pydict-debug.log', filemode='a',\
+                                format="[%(levelname)s]%(asctime)s : %(message)s",\
+                                level=logging.DEBUG)
+            logger.setLevel(logging.DEBUG)
 
         for action in actions:
 
@@ -137,19 +148,19 @@ def main():
 
             if action == 'look':
                 # PyDict.py english -l [info:value, ...]
-                print(dynamicQuery(session, infos[action]['language'], infos[action]['other']))
+                result_format(dynamicQuery(session, infos[action]['language'], infos[action]['other']))
 
             if action == 'trad':
                 # PyDict.py english -l [info:value, ...]
-                print(REL_getTrad(session, infos[action]['language'], infos[action]['target'], infos[action]['other']))
+                result_format(REL_getTrad(session, infos[action]['language'], infos[action]['target'], infos[action]['other']))
 
             if action == 'view':
                 # PyDict.py english -v [info:value, ...]
-                print(infos[action])
+                result_format(infos[action])
 
             if action == 'complete':
                 # PyDict.py english -c
-                print(infos[action])
+                result_format(infos[action])
         if exit:
             session.close()
             break

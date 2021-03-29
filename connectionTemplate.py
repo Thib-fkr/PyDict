@@ -2,17 +2,15 @@
 #
 #
 
-from Classes.baseTest import Session, engine, Base
 import time
+from Classes.baseTest import Session, engine, Base
 from Classes.idClass import Word_ID
 from Classes.languageClass import French, English, Dutch
-
-
 from Functions.functionModule import *
+
 
 def main():
     session = Session()
-
 
 """
 session = Session()
@@ -92,5 +90,6 @@ def main():
     session.commit()
     session.close()
     """
+
 if __name__ == '__main__':
     main()

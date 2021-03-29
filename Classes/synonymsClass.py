@@ -1,14 +1,14 @@
-# File containing objects that will be used to store synonyms related to basic dictionnary data.
-#
+# File containing objects that will be used to store synonyms related to basic
+# dictionnary data.
 #
 
 from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from Classes.baseTest import Base
 
+
 class FrenchSy(Base):
     """"""
-
     # Table info
     __tablename__ = 'french_synonyms'
     id = Column(Integer, primary_key=True)
@@ -24,9 +24,9 @@ class FrenchSy(Base):
         self.synonyms = synonyms
         self.ref_synonym = ref_synonym
 
+
 class EnglishSy(Base):
     """"""
-
     # Table info
     __tablename__ = 'english_synonyms'
     id = Column(Integer, primary_key=True)
@@ -42,9 +42,9 @@ class EnglishSy(Base):
         self.synonyms = synonyms
         self.ref_synonym = ref_synonym
 
+
 class DutchSy(Base):
     """"""
-
     # Table info
     __tablename__ = 'dutch_synonyms'
     word = Column(Integer, primary_key=True)

@@ -7,6 +7,7 @@ from Classes.baseTest import Base
 from Classes.idClass import Word_ID
 from sqlalchemy import MetaData
 from Classes.baseTest import engine
+
 # The next imports are only to be used for static typing
 from sqlalchemy.orm.session import Session as SessionObject
 
@@ -15,9 +16,10 @@ from sqlalchemy.orm.session import Session as SessionObject
 # from sqlalchemy.orm.state import InstanceState as InstanceObject
 # from sqlalchemy.orm import Mapper as MapperObject
 
+
 def tableExist(tableName:str):
     """
-    Check if a table exist
+    Check if a table exist.
     Parameters :
     ------------
     tableName : name of the table (str)
@@ -27,9 +29,10 @@ def tableExist(tableName:str):
     """
     return engine.has_table(tableName)
 
+
 def getTable(tableName:str):
     """
-    Get the SQLAlchemy table object by the provided name
+    Get the SQLAlchemy table object by the provided name.
     Parameters :
     ------------
     tableName : name of the table (str)
@@ -47,14 +50,14 @@ def getTable(tableName:str):
 
         for table in meta.sorted_tables:
             if table.name == tableName :
-
                 return table
     else:
         raise ValueError
 
+
 def getTableObject(tableName:str):
     """
-    Get table class object by it's name
+    Get table class object by it's name.
     Parameters :
     ------------
     tableName : name of the table (str)
@@ -63,13 +66,17 @@ def getTableObject(tableName:str):
     table class : any of the table class objects initialized by the program ()
     """
     for _class in Base._decl_class_registry.values():
-        if hasattr(_class, '__table__') and tableName == _class.__table__.fullname and _class is not None:
+        if (hasattr(_class, '__table__')
+            and tableName == _class.__table__.fullname
+            and _class is not None):
             return _class
+
     return ValueError('Could not find table')
+
 
 def getTableInstance_REL(obj, target):
     """
-    Get table instance based on the relationships
+    Get table instance based on the relationships.
     Parameters :
     ------------
     obj :
@@ -84,16 +91,16 @@ def getTableInstance_REL(obj, target):
 
     for rel in inspect(obj).mapper.relationships:
         if rel.mapper.class_ == target:
-
             return rel.mapper.local_table
 
     # return [rel.mapper.local_table \
     #       for rel in inspect(obj).mapper.relationships \
     #       if rel.mapper.class_ == target]
 
+
 def getTableInstance_QUE(session:SessionObject, model:str, query:dict):
     """
-    Get an instance of a table object
+    Get an instance of a table object.
     Parameters :
     ------------
     session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
@@ -103,12 +110,13 @@ def getTableInstance_QUE(session:SessionObject, model:str, query:dict):
     ---------
     """
     return session.query(getTableObject(model)) \
-                    .filter_by(**query) \
-                    .one()
+                  .filter_by(**query) \
+                  .one()
+
 
 def getColumnsNames(tableName:str):
     """
-    Get all the available columns in a specific table
+    Get all the available columns in a specific table.
     Parameters :
     ------------
     tableName : name of the table (str)
@@ -118,19 +126,22 @@ def getColumnsNames(tableName:str):
     """
     return [column.name for column in inspect(getTable(tableName)).c]
 
+
 def getColumnsObject(tableName:str, columnName:str):
     """"""
     for col in getColumnsNames(tableName):
         if columnName == col:
             inspec = inspect(getTable(tableName)).c
-
             return inspec[col]
 
-    # return [inspect(getTable(tableName)).c[col] for col in getColumnsNames(tableName) if if columnName == col]
+    # return [inspect(getTable(tableName)).c[col]
+    # for col in getColumnsNames(tableName)
+    # if columnName == col]
+
 
 def entryExist(session:SessionObject, model:str, query:dict):
     """
-    Check if an entry matches the info given as 'query'
+    Check if an entry matches the info given as 'query'.
     Parameters :
     ------------
     session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
@@ -142,19 +153,24 @@ def entryExist(session:SessionObject, model:str, query:dict):
     """
     from sqlalchemy import literal
 
-    q = session.query(getTable(model)).filter_by(**query)
+    q = session.query(getTable(model)) \
+               .filter_by(**query)
 
     return session.query(literal(True)) \
-                    .filter(q.exists()) \
-                    .scalar()
+                  .filter(q.exists()) \
+                  .scalar()
 
-    # return session.query(literal(True))\
-    #               .filter(session.query(getTable(model)).filter_by(**query).exists())\
+    # return session.query(literal(True))
+    #               .filter(session.query(getTable(model))
+    #                              .filter_by(**query)
+    #                              .exists()
+    #                      )
     #               .scalar()
+
 
 def getWordIDObject(session:SessionObject, word:str):
     """
-    Get the Word_ID object that corresponds to the given word
+    Get the Word_ID object that corresponds to the given word.
     Parameters :
     ------------
     session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
@@ -164,20 +180,19 @@ def getWordIDObject(session:SessionObject, word:str):
     --------
     Word_ID : (PYDICT.Classes.idClass.Word_ID)
     """
-
     query = {'word' : word}
-
     if entryExist(session, 'word_id', query):
-
         return session.query(Word_ID) \
-                    .filter_by(**query) \
-                    .one()
+                      .filter_by(**query) \
+                      .one()
     else:
         raise ValueError
 
+
 def dynamicQuery(session:SessionObject, model:str, query:dict):
     """
-    Allow to get information from the database in a way that is more "user/developer -friendly"
+    Allow to get information from the database in a way
+    that is more "user/developer -friendly".
     Parameters :
     ------------
     session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
@@ -195,12 +210,15 @@ def dynamicQuery(session:SessionObject, model:str, query:dict):
     (with both "column" and "value" being strings)
     """
     return session.query(getTable(model)) \
-                    .filter_by(**query) \
-                    .all()
+                  .filter_by(**query) \
+                  .all()
 
-def addRow(session:SessionObject, tableName:str, word:str, ref_word:str, others:dict, addWID=False):
+
+def addRow(session:SessionObject, tableName:str,
+           word:str, ref_word:str,
+           others:dict, addWID=False):
     """
-    Add a row to a table
+    Add a row to a table.
     Parameters :
     ------------
     session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
@@ -211,8 +229,8 @@ def addRow(session:SessionObject, tableName:str, word:str, ref_word:str, others:
     """
     from Classes.languageClass import Language
 
-    if (not entryExist(session, 'word_id', {'word' : ref_word})) and addWID:
-
+    if (not entryExist(session, 'word_id', {'word' : ref_word}))
+        and addWID:
         WIDobj = Word_ID(ref_word)
         obj = Language.factory(tableName, word, WIDobj, **others)
 
@@ -221,18 +239,23 @@ def addRow(session:SessionObject, tableName:str, word:str, ref_word:str, others:
 
         session.commit()
 
-    elif (not entryExist(session, 'word_id', {'word' : ref_word})) and (not addWID):
+    elif (not entryExist(session, 'word_id', {'word' : ref_word}))
+          and (not addWID):
         raise IOError
 
     else:
-        obj = Language.factory(tableName, word, getWordIDObject(session, ref_word), **others)
+        obj = Language.factory(tableName,
+                               word,
+                               getWordIDObject(session, ref_word),
+                               **others)
 
         session.add(obj)
         session.commit()
 
+
 def updateRow(session:SessionObject, model:str, query:dict, values:dict):
     """
-    Update a specific row
+    Update a specific row.
     Parameters :
     ------------
     session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
@@ -241,14 +264,14 @@ def updateRow(session:SessionObject, model:str, query:dict, values:dict):
     values : (dict)\n
     """
     # synchronize_session=False is here to prevent an error
-
     session.query(getTable(model)) \
-            .filter_by(**query) \
-            .update(values, synchronize_session=False)
+           .filter_by(**query) \
+           .update(values, synchronize_session=False)
+
 
 def deleteRow(session:SessionObject, model:str, query:dict):
     """
-    Delete a specific row
+    Delete a specific row.
     Parameters :
     ------------
     session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
@@ -256,12 +279,15 @@ def deleteRow(session:SessionObject, model:str, query:dict):
     query : (dict)\n
     """
     session.query(getTable(model)) \
-            .filter_by(**query) \
-            .delete()
+           .filter_by(**query) \
+           .delete()
 
 ################################################
 
-def QUE_getTrad(session:SessionObject, baseLanguage:str, targetLanguage:str, query:dict):
+
+def QUE_getTrad(session:SessionObject,
+                baseLanguage:str, targetLanguage:str,
+                query:dict):
     """
     Get the traduction of a word based on two queries.
     Parameters :
@@ -269,19 +295,27 @@ def QUE_getTrad(session:SessionObject, baseLanguage:str, targetLanguage:str, que
     Outputs :
     ---------
     """
-
     wordID = dynamicQuery(session, baseLanguage, query)[0][0]
     info = {'ref_word_id' : wordID}
 
     return session.query(getTable(targetLanguage)) \
-                    .filter_by(**info) \
-                    .all()
+                  .filter_by(**info) \
+                  .all()
 
-    # return session.query(rel)\
-    #               .filter_by(**{'ref_word_id' : dynamicQuery(session, baseLanguage, query)[0]['ref_word_id']})\
+    # return session.query(rel)
+    #               .filter_by(**{'ref_word_id' : dynamicQuery(session,
+    #                                                          baseLanguage,
+    #                                                          query)
+    #                                                          [0]
+    #                                                          ['ref_word_id']
+    #                            }
+    #                         )
     #               .all()
 
-def REL_getTrad(session:SessionObject, baseLanguage:str, targetLanguage:str, query:dict):
+
+def REL_getTrad(session:SessionObject,
+                baseLanguage:str, targetLanguage:str,
+                query:dict):
     """
     Get the traduction of a word based of the relationships between the tables.
     Parameters :
@@ -289,15 +323,24 @@ def REL_getTrad(session:SessionObject, baseLanguage:str, targetLanguage:str, que
     Outputs :
     ---------
     """
-    languageObject = getTableInstance_QUE(session, baseLanguage, query).ref_word
+    languageObject = getTableInstance_QUE(session, baseLanguage, query)
+                     .ref_word
     rel = getTableInstance_REL(languageObject, getTableObject(targetLanguage))
 
     info = {'ref_word_id' : languageObject.id}
 
     return session.query(rel) \
-                    .filter_by(**info) \
-                    .all()
+                  .filter_by(**info) \
+                  .all()
 
-    # return session.query(getTableInstance_REL(languageObject, getTableObject(targetLanguage))) \
-    #               .filter_by(**{'ref_word_id' : getTableInstance_QUE(session, baseLanguage, query).ref_word.id}) \
+    # return session.query(getTableInstance_REL(languageObject,
+    #                                           getTableObject(targetLanguage)
+    #                                          )
+    #                     )
+    #               .filter_by(**{'ref_word_id' : getTableInstance_QUE(session,
+    #                                                                  baseLanguage,
+    #                                                                  query)
+    #                                             .ref_word.id
+    #                            }
+    #                         )
     #               .all()

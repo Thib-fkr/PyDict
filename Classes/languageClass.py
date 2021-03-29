@@ -6,7 +6,9 @@ from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from Classes.baseTest import Base
 
+
 class Language(object):
+    """"""
 
     @staticmethod
     def factory(type:str, word:str, ref_word:str, **kwargs):
@@ -16,6 +18,7 @@ class Language(object):
             return Dutch(word=word, ref_word=ref_word, **kwargs)
         elif type == 'english' :
             return English(word=word, ref_word=ref_word, **kwargs)
+
 
 class French(Base):
     """
@@ -29,7 +32,6 @@ class French(Base):
     part-of-speech,\n
     reference word
     """
-
     # Table info
     __tablename__ = 'french'
     ref_word_id = Column(Integer, ForeignKey('word_id.id'), primary_key=True)
@@ -51,6 +53,7 @@ class French(Base):
         self.gender = gender
         self.pos = pos
 
+
 class English(Base):
     """
     English language table
@@ -62,7 +65,6 @@ class English(Base):
     part-of-speech,\n
     reference word
     """
-
     # Table info
     __tablename__ = 'english'
     ref_word_id = Column(Integer, ForeignKey('word_id.id'), primary_key=True)
@@ -83,6 +85,7 @@ class English(Base):
         self.definition = definition
         self.gender = gender
 
+
 class Dutch(Base):
     """
     Dutch language table
@@ -95,7 +98,6 @@ class Dutch(Base):
     part-of-speech,\n
     reference word
     """
-
     # Table info
     __tablename__ = 'dutch'
     ref_word_id = Column(Integer, ForeignKey('word_id.id'), primary_key=True)

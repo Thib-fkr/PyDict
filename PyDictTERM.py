@@ -1,12 +1,15 @@
 #
 #
 #
-from Classes.baseTest import Session, engine, Base
 import time, logging
-from Functions.functionModule import updateRow, addRow, getColumnsNames, REL_getTrad, QUE_getTrad, dynamicQuery
-# Loading classes to dodge Error from getTableObject function due to dynamically created class...
+from Classes.baseTest import Session, engine, Base
+from Functions.functionModule import updateRow, addRow, getColumnsNames,
+                                     REL_getTrad, QUE_getTrad, dynamicQuery
+
+# Loading classes to dodge error from getTableObject function due to dynamically created class...
 # https://stackoverflow.com/questions/51296432/flask-sqlalchemy-db-model-decl-class-registry-values-and-db-metadata-tables-a
 from Classes.languageClass import *
+
 
 def input_parser(user_input:list, debug=False, exit=False):
     """
@@ -26,8 +29,8 @@ def input_parser(user_input:list, debug=False, exit=False):
     infos = {}
     # Iterate over each input the user made
     for line in user_input:
-
         line = line.split()
+
         # Check if there is a special keyword
         if line[0] == 'help':
             print('help')
@@ -36,8 +39,8 @@ def input_parser(user_input:list, debug=False, exit=False):
         elif line[0] == 'debug':
             debug = True
         else:
-
-            # Create a 'action' section in the 'info' dict and store the source language
+            # Create a 'action' section in the 'info' dict and store
+            # the source language
             infos[line[0]] = {}
             infos[line[0]]['language'] = line[1]
 
@@ -76,7 +79,6 @@ def input_parser(user_input:list, debug=False, exit=False):
                     infos[line[0]]['other'][name] = value
 
             elif line[0] == 'edit':
-
                 try:
                     infos[line[0]]['search']
                     infos[line[0]]['to_edit']
@@ -98,6 +100,7 @@ def input_parser(user_input:list, debug=False, exit=False):
 
     return infos, debug, exit
 
+
 def result_format(result:list):
     """"""
     length = max([len(element) for element in result])
@@ -109,11 +112,13 @@ def result_format(result:list):
 def main():
     session = Session()
     print('')
+
     while True:
         user_input_list = []
 
         while True:
             user_input = input('$')
+
             if user_input == 'ex':
                 break
             else:
@@ -125,9 +130,10 @@ def main():
 
         logger = logging.getLogger(__name__)
         if debug:
-            logging.basicConfig(filename='pydict-debug.log', filemode='a',\
-                                format="[%(levelname)s]%(asctime)s : %(message)s",\
-                                level=logging.DEBUG)
+            logging.basicConfig(
+                    filename='pydict-debug.log', filemode='a',\
+                    format="[%(levelname)s]%(asctime)s : %(message)s",\
+                    level=logging.DEBUG)
             logger.setLevel(logging.DEBUG)
 
         for action in actions:
@@ -136,32 +142,38 @@ def main():
                 pass
 
             if action == 'edit':
-                # PyDict.py BaseLanguage -e [targetLanguage,]
-                updateRow(session, infos[action]['language'], infos[action]['search'], infos[action]['to_edit'])
+                updateRow(session,
+                          infos[action]['language'],
+                          infos[action]['search'],
+                          infos[action]['to_edit'])
 
             if action == 'add':
-                # PyDict.py english -a [ID, word:value, info:value, info:value, ..., 0/1]
-                addRow(session,infos[action]['language'],infos[action]['word'],infos[action]['ref'],infos[action]['other'], addWID=True)
+                addRow(session,
+                       infos[action]['language'],
+                       infos[action]['word'],
+                       infos[action]['ref'],
+                       infos[action]['other'], addWID=True)
 
             if action == 'look':
-                # PyDict.py english -l [info:value, ...]
-                result_format(dynamicQuery(session, infos[action]['language'], infos[action]['other']))
+                result_format(dynamicQuery(session,
+                                           infos[action]['language'],
+                                           infos[action]['other']))
 
             if action == 'trad':
-                # PyDict.py english -l [info:value, ...]
-                result_format(REL_getTrad(session, infos[action]['language'], infos[action]['target'], infos[action]['other']))
+                result_format(REL_getTrad(session,
+                                          infos[action]['language'],
+                                          infos[action]['target'],
+                                          infos[action]['other']))
 
             if action == 'view':
-                # PyDict.py english -v [info:value, ...]
                 result_format(infos[action])
 
             if action == 'complete':
-                # PyDict.py english -c
                 result_format(infos[action])
+
         if exit:
             session.close()
             break
-
 
 if __name__ == "__main__":
     main()

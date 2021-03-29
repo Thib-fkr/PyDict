@@ -23,7 +23,7 @@ def tableExist(tableName:str):
     tableName : name of the table (str)
     Output :
     --------
-    existance : whether the table exist or not (bool)
+    existence : whether the table exist or not (bool)
     """
     return engine.has_table(tableName)
 
@@ -91,19 +91,19 @@ def getTableInstance_REL(obj, target):
     #       for rel in inspect(obj).mapper.relationships \
     #       if rel.mapper.class_ == target]
 
-def getTableInstance_QUE(session:SessionObject, model:str, queryy:dict):
+def getTableInstance_QUE(session:SessionObject, model:str, query:dict):
     """
     Get an instance of a table object
     Parameters :
     ------------
     session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
     model : Wanted table object's name (str)\n
-    query : How to filter wanted informations(dict)
+    query : How to filter wanted information(dict)
     Outputs :
     ---------
     """
     return session.query(getTableObject(model)) \
-                    .filter_by(**queryy) \
+                    .filter_by(**query) \
                     .one()
 
 def getColumnsNames(tableName:str):
@@ -134,8 +134,8 @@ def entryExist(session:SessionObject, model:str, query:dict):
     Parameters :
     ------------
     session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
-    model : Table where you want to get the informations from (str)\n
-    query : How to filter wanted informations(dict)
+    model : Table where you want to get the information from (str)\n
+    query : How to filter wanted information (dict)
     Output :
     --------
     entryExists : (bool)
@@ -158,7 +158,7 @@ def getWordIDObject(session:SessionObject, word:str):
     Parameters :
     ------------
     session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
-    model : Table where you want to get the informations from (str)\n
+    model : Table where you want to get the information from (str)\n
     word : (str)
     Output :
     --------
@@ -177,18 +177,18 @@ def getWordIDObject(session:SessionObject, word:str):
 
 def dynamicQuery(session:SessionObject, model:str, query:dict):
     """
-    Allow to get informations from the database in a way that is more "user/develloper -friendly"
+    Allow to get information from the database in a way that is more "user/developer -friendly"
     Parameters :
     ------------
     session : SQLAlchemy session object (sqlalchemy.orm.session.Session)\n
-    model : Table where you want to get the informations from (str)\n
-    query : How to filter wanted informations(dict)
+    model : Table where you want to get the information from (str)\n
+    query : How to filter wanted information (dict)
     Outputs :
     ---------
     result : result of the query (list)
     Notes :
     -------
-    The query (type:dictonnary) has to correspond to the following pattern :\n
+    The query (type:dictionary) has to correspond to the following pattern :\n
     {
         column : value
     }\n
@@ -207,7 +207,7 @@ def addRow(session:SessionObject, tableName:str, word:str, ref_word:str, others:
     tableName : name of the table (str)
     word : word you want to add (str)
     ref_word : reference word (str)
-    others : informations about the word (dict)
+    others : information about the word (dict)
     """
     from Classes.languageClass import Language
 

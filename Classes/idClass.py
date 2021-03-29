@@ -1,4 +1,4 @@
-# File containing a table that will allow the program to map words inbetween the different languages.
+# File containing a table that will allow the program to map words between the different languages.
 #
 #
 

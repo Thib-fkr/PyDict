@@ -100,10 +100,10 @@ def input_parser(user_input:list, debug=False, exit=False):
 
 def result_format(result:list):
     """"""
-    lenght = max([len(element) for element in result])
-    print('|'+ lenght*'=' + '|')
+    length = max([len(element) for element in result])
+    print('|'+ length*'=' + '|')
     for element in result:
-        print('|'+ element + (lenght-len(element))*' ' + '|')
+        print('|'+ element + (length-len(element))*' ' + '|')
 
 
 def main():

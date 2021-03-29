@@ -2,11 +2,11 @@
 
 The goal of this project is to create a tool that can help someone who wants to learn a language with a customizable dictionary.
 
-## Ressources
+## Resources
 - [Python 3.8 (programming language)](https://www.python.org)
 - [SQLAlchemy (ORM)](https://www.sqlalchemy.org)
 - [PostgreSQL (SQBD)](https://www.postgresql.org)
-- [Psycopg2 (PostgreSQL adaptater for python)](https://www.psycopg.org)
+- [Psycopg2 (PostgreSQL adapter for python)](https://www.psycopg.org)
 
 ## Features
 ### The user has to be able to :
@@ -23,7 +23,7 @@ The goal of this project is to create a tool that can help someone who wants to 
 
 - quit the application
 
-- (play personnalized game)
+- (play personalized game)
 
 ### The program has to be able to :
 

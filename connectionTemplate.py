@@ -1,4 +1,4 @@
-# File containing a template for the connexion to a DB.
+# File containing a template for the connection to a DB.
 #
 #
 

@@ -27,10 +27,10 @@ def main():
                         help='add information about a word')
 
     parser.add_argument('-l','--look',type=str ,metavar='info', dest='look', action='append', nargs='+',\
-                        help='look for a specific word coresponding to criterias')
+                        help='look for a specific word coresponding to criteria')
 
     parser.add_argument('-v','--view',type=str ,metavar='info', dest='view', action='append', nargs='+',\
-                        help='look for a list of word corresponding to some criterias')
+                        help='look for a list of word corresponding to some criteria')
 
     parser.add_argument('-c','--complete', dest='complete', action='store_true',\
                         help='indicate wherever the data is incomplete')

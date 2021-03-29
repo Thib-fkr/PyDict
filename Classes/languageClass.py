@@ -21,12 +21,12 @@ class French(Base):
     """
     French language table
 
-    Informations to specify :
+    Information to specify :
     --------------
-    word, 
-    definition, 
-    gender, 
-    part-of-speech, 
+    word,\n
+    definition,\n
+    gender,\n
+    part-of-speech,\n
     reference word
     """
 
@@ -55,11 +55,11 @@ class English(Base):
     """
     English language table
 
-    Informations to specify :
+    Information to specify :
     --------------
-    word, 
-    definition, 
-    part-of-speech, 
+    word,\n
+    definition,\n
+    part-of-speech,\n
     reference word
     """
 
@@ -87,12 +87,12 @@ class Dutch(Base):
     """
     Dutch language table
 
-    Informations to specify:
+    Information to specify:
     --------------
-    word, 
-    definition, 
-    gender, 
-    part-of-speech, 
+    word,\n
+    definition,\n
+    gender,\n
+    part-of-speech,\n
     reference word
     """
 

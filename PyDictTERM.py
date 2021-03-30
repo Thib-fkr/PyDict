@@ -1,12 +1,12 @@
 #
 #
 #
+import os
 import time
 import logging
 from Classes.baseTest import Session, engine, Base
 from Functions.functionModule import updateRow, addRow, getColumnsNames,
                                      REL_getTrad, QUE_getTrad, dynamicQuery
-
 # Loading classes to dodge error from getTableObject function due to dynamically created class...
 # https://stackoverflow.com/questions/51296432/flask-sqlalchemy-db-model-decl-class-registry-values-and-db-metadata-tables-a
 from Classes.languageClass import *
@@ -110,17 +110,74 @@ def input_parser(user_input:list, debug=False, exit=False):
     return infos, debug, exit
 
 
+def start_display():
+    """"""
+    # License Messages etc :
+    #
+    #
+    #
+    #
+    # credits()
+    # term_width, term_height = os.terminal_size()
+
+    start_message = """
+    PYDICT TERMINAL APPLICATION
+    by ~~"""
+    print(start_message)
+
+
+def help_display():
+    """"""
+    help_message_header = """
+     __________________
+    |How does it work ?|
+    |__________________|"""
+
+    help_message_body ="""
+    Write the actions you want the program to perform in the bow below.
+    To make the program perform the actions, write \"ex\"."""
+
+    help_message_actions = """
+    Add a word to a language's dictionnary :
+    --> add <language> <word> <ref_word> [word_information]
+
+    Look for a word in regard to given information :
+    --> look <language> [word_information]
+
+    Translate a word from a language to another :
+    --> trad <source_language> <target_language> [word_information]
+
+    ([word_information] -> info_1:value_1 info_2:value_2 info_3:value_3)
+
+
+    Edit a specific word's information :
+    --> edit <language> [word_current_information] [word_new_information]
+
+    ([word_~_information] -> info_1:value_1,info_2:value_2,info_3:value_3)
+
+
+    View :
+    --> Not implemented yet
+
+    Complete :
+    --> Not implemented yet
+    """
+    print(help_message_header)
+    print(help_message_body)
+    print(help_message_actions)
+
+
 def result_format(result:list):
     """"""
-    length = max([len(element) for element in result])
+    length = max((len(element) for element in result))
     print('|'+ length*'=' + '|')
     for element in result:
         print('|'+ element + (length-len(element))*' ' + '|')
 
 
 def main():
+    start_display()
     session = Session()
-    print('')
 
     while True:
         user_input_list = []
@@ -154,7 +211,7 @@ def main():
         for action in actions:
 
             if action == 'help':
-                pass
+                help_display()
 
             if action == 'edit':
                 updateRow(session,

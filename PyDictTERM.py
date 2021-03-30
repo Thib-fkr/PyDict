@@ -1,7 +1,8 @@
 #
 #
 #
-import time, logging
+import time
+import logging
 from Classes.baseTest import Session, engine, Base
 from Functions.functionModule import updateRow, addRow, getColumnsNames,
                                      REL_getTrad, QUE_getTrad, dynamicQuery
@@ -11,6 +12,10 @@ from Functions.functionModule import updateRow, addRow, getColumnsNames,
 from Classes.languageClass import *
 
 
+def name_value_parser(line:list, element:int, char:str = ':'):
+    return (line[element].split(char)[elem_id] for elem_id in range(2))
+
+
 def input_parser(user_input:list, debug=False, exit=False):
     """
     Format :
@@ -18,84 +23,88 @@ def input_parser(user_input:list, debug=False, exit=False):
 
     Parameters :
     ------------
+    user_input : (list)
+    debug : (optional, bool)
+    debug : (optional, bool)
 
     Output :
     --------
-
+    infos : (dict)
+    debug : (bool)
+    exit : (bool)
     """
-    def name_value_parser(line, info):
-        return (line[info].split(':')[n] for n in range(2))
-
+    # Initialize info data structure
     infos = {}
+
     # Iterate over each input the user made
     for line in user_input:
         line = line.split()
+        action = line[0]
 
         # Check if there is a special keyword
-        if line[0] == 'help':
+        if action == 'help':
             print('help')
-        elif line[0] == 'exit':
+        elif action == 'exit':
             exit = True
-        elif line[0] == 'debug':
+        elif action == 'debug':
             debug = True
         else:
             # Create a 'action' section in the 'info' dict and store
             # the source language
-            infos[line[0]] = {}
-            infos[line[0]]['language'] = line[1]
+            infos[action] = {}
+            infos[action]['language'] = line[1]
 
-        for info in range(len(line)):
-            if info in [0,1]:
-                continue
-
-            if line[0] == 'add':
+        for info in range(2, len(line)):
+            if action == 'add':
                 name, value = name_value_parser(line, info)
-                if name in ['word', 'ref']:
-                    infos[line[0]][name] = value
+                if name in ('word', 'ref'):
+                    infos[action][name] = value
                 else:
                     try:
-                        infos[line[0]]['other']
+                        infos[action]['other']
                     except KeyError:
-                        infos[line[0]]['other'] = {}
-                    infos[line[0]]['other'][name] = value
+                        infos[action]['other'] = {}
+                    infos[action]['other'][name] = value
 
-            elif line[0] == 'look':
+            elif action == 'look':
                 try:
-                    infos[line[0]]['other']
+                    infos[action]['other']
                 except KeyError:
-                    infos[line[0]]['other'] = {}
+                    infos[action]['other'] = {}
                 name, value = name_value_parser(line, info)
-                infos[line[0]]['other'][name] = value
+                infos[action]['other'][name] = value
 
-            elif line[0] == 'trad':
+            elif action == 'trad':
                 name, value = name_value_parser(line, info)
                 if name == 'target':
-                    infos[line[0]][name] = value
+                    infos[action][name] = value
                 else:
                     try:
-                        infos[line[0]]['other']
+                        infos[action]['other']
                     except KeyError:
-                        infos[line[0]]['other'] = {}
-                    infos[line[0]]['other'][name] = value
+                        infos[action]['other'] = {}
+                    infos[action]['other'][name] = value
 
-            elif line[0] == 'edit':
+            elif action == 'edit':
                 try:
-                    infos[line[0]]['search']
-                    infos[line[0]]['to_edit']
+                    infos[action]['search']
                 except KeyError:
-                    infos[line[0]]['search'] = {}
-                    infos[line[0]]['to_edit'] = {}
+                    infos[action]['search'] = {}
+                try:
+                    infos[action]['to_edit']
+                except KeyError:
+                    infos[action]['to_edit'] = {}
 
                 if info == 2:
                     for values in line[info].split(','):
                         name, value = (values.split(':')[n] for n in range(2))
-                        infos[line[0]]['search'][name] = value
+                        infos[action]['search'][name] = value
                 else:
                     for values in line[info].split(','):
                         name, value = (values.split(':')[n] for n in range(2))
-                        infos[line[0]]['to_edit'][name] = value
+                        infos[action]['to_edit'][name] = value
 
-            elif line[0] == 'view':
+            elif action == 'view':
                 pass
 
     return infos, debug, exit

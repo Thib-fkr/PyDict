@@ -131,19 +131,25 @@ def main():
             if user_input == 'ex':
                 break
             else:
-                if user_input != '\n' and user_input != '':
+                # If user_input not empty
+                if not user_input in ('\n', ''):
+                    # Add user's input without the \n
                     user_input_list.append(user_input[:len(user_input)])
 
         infos, debug, exit = input_parser(user_input_list)
-        actions = [a for a in infos]
+        actions = (action for action in infos)
+
 
         logger = logging.getLogger(__name__)
+        logging.basicConfig(
+                filename='pydict_森.log', filemode='a',\
+                format="[%(levelname)s]%(asctime)s : %(message)s",\
+                level=logging.DEBUG)
         if debug:
-            logging.basicConfig(
-                    filename='pydict-debug.log', filemode='a',\
-                    format="[%(levelname)s]%(asctime)s : %(message)s",\
-                    level=logging.DEBUG)
             logger.setLevel(logging.DEBUG)
+        else:
+            logger.setLevel(logging.INFO)
+
 
         for action in actions:
 

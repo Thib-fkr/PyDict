@@ -117,7 +117,6 @@ def start_display():
     #
     #
     #
-    # credits()
     # term_width, term_height = os.terminal_size()
 
     start_message = """

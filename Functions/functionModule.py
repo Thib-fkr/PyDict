@@ -1,12 +1,13 @@
 #
 #
 #
-
+from sqlalchemy import MetaData, literal
 from sqlalchemy.inspection import inspect
+
 from Classes.baseTest import Base
 from Classes.idClass import Word_ID
-from sqlalchemy import MetaData
 from Classes.baseTest import engine
+from Classes.languageClass import Language
 
 # The next imports are only to be used for static typing
 from sqlalchemy.orm.session import Session as SessionObject
@@ -151,7 +152,6 @@ def entryExist(session:SessionObject, model:str, query:dict):
     --------
     entryExists : (bool)
     """
-    from sqlalchemy import literal
 
     q = session.query(getTable(model)) \
                .filter_by(**query)
@@ -227,7 +227,6 @@ def addRow(session:SessionObject, tableName:str,
     ref_word : reference word (str)
     others : information about the word (dict)
     """
-    from Classes.languageClass import Language
 
     if (not entryExist(session, 'word_id', {'word' : ref_word}))
         and addWID:

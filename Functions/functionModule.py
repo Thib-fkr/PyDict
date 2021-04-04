@@ -3,7 +3,6 @@
 #
 from sqlalchemy import MetaData, literal
 from sqlalchemy.inspection import inspect
-
 from Classes.baseTest import Base
 from Classes.idClass import Word_ID
 from Classes.baseTest import engine

@@ -83,10 +83,6 @@ def getTableInstance_REL(obj, target):
     target :
     Outputs :
     ---------
-    Notes :
-    -------
-    I might have to rewrite this function in a more efficient/simple way.
-    Like using queries to get the object for example.
     """
 
     for rel in inspect(obj).mapper.relationships:

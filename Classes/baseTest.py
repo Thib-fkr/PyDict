@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-engine = create_engine('postgresql+psycopg2://postgres:@localhost:5432/PYTest',
+engine = create_engine('postgresql+psycopg2://postgres:@localhost:5432/PYDICTDB',
                         pool_pre_ping=True)
 Session = sessionmaker(bind=engine)
 

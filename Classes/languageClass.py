@@ -8,7 +8,10 @@ from Classes.baseTest import Base
 
 
 class Language(object):
-    """"""
+    """
+    Class that is to be used to create instances of other classes by using
+    a factory method.
+    """
 
     @staticmethod
     def factory(type:str, word:str, ref_word:str, **kwargs):
@@ -25,12 +28,7 @@ class French(Base):
     French language table
 
     Information to specify :
-    --------------
-    word,\n
-    definition,\n
-    gender,\n
-    part-of-speech,\n
-    reference word
+    ------------------------
     """
     # Table info
     __tablename__ = 'french'
@@ -38,20 +36,35 @@ class French(Base):
 
     # Values
     word = Column(String)
-    definition = Column(String)
-    gender = Column(String)
+    phonetic = Column(String)
     pos = Column(String)
+    gender = Column(String)
+    source_info = Column(String)
+    definition = Column(String)
+    tags = Column(String)
+    examples = Column(String)
+    synonyms = Column(String)
 
     # Relationships
     ref_word = relationship('Word_ID', back_populates='french_word')
-    #synonyms = relationship('FrenchSy',back_populates='ref_synonym')
 
-    def __init__(self, word, ref_word, definition='', gender='', pos=''):
-        self.word = word
+    def __init__(self,
+                 ref_word,
+                 word,
+                 phonetic='[]',
+                 pos='', gender='', source_info='', definition='',
+                 tags=[], examples=[], synonyms=[]):
+
         self.ref_word = ref_word
-        self.definition = definition
-        self.gender = gender
+        self.word = word
+        self.phonetic = phonetic
         self.pos = pos
+        self.gender = gender
+        self.source_info = source_info
+        self.definition = definition
+        self.tags = tags
+        self.examples = examples
+        self.synonyms = synonyms
 
 
 class English(Base):
@@ -59,11 +72,7 @@ class English(Base):
     English language table
 
     Information to specify :
-    --------------
-    word,\n
-    definition,\n
-    part-of-speech,\n
-    reference word
+    ------------------------
     """
     # Table info
     __tablename__ = 'english'
@@ -90,13 +99,8 @@ class Dutch(Base):
     """
     Dutch language table
 
-    Information to specify:
-    --------------
-    word,\n
-    definition,\n
-    gender,\n
-    part-of-speech,\n
-    reference word
+    Information to specify :
+    ------------------------
     """
     # Table info
     __tablename__ = 'dutch'
